@@ -5,9 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include<stdlib.h>
-void printList(symbolListPtr);
-
-
 /*declerations*/
 
 /*type of symbol*/
@@ -31,6 +28,8 @@ typedef struct node{
 	Symbol symbol;
 	symbolListPtr next;
 }  ListItem;
+
+void printList(symbolListPtr);
 
 /*making the head of the list equal to NULL */
 symbolListPtr symbolListHead=NULL;
