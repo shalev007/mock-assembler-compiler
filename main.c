@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 		printf("no file chosen...\n");
 		exit(0);
 	}
-	
+
 	/*loop through the files*/
 	while(--argc) {
 		process_file(argv[argc]);
