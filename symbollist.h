@@ -24,7 +24,7 @@ typedef struct {
 typedef struct node * symbolListPtr;
 
 /* node decleration */
-typedef struct node{
+typedef struct node {
 	Symbol symbol;
 	symbolListPtr next;
 }  ListItem;
@@ -33,4 +33,7 @@ typedef struct node{
 symbolListPtr symbolListHead;
 
 /* print symbol list */
-void printList(symbolListPtr);
+void printSymbolList();
+
+/* push symbol to list */
+void pushSymbolToList(Symbol);
