@@ -1,10 +1,8 @@
-#include "fileprocess.c"
-
-void process_file(char *);
+#include "fileprocess.h"
 
 int main(int argc, char *argv[])
 {
-	
+
 	/* validate amount of files */
 	if(argc < 2) {
 		printf("no file chosen...\n");
