@@ -46,28 +46,33 @@ void pushSymbolToList(Symbol symbol)
 		current->next->next = NULL;
 	}
 }
-/*remove ONE item from list with the name value the same to the given name */
-void removeFromList(char *nameToRemove)
+
+/* remove ONE item from list with the name value the same to the given name */
+void removeFromSymbolList(char *nameToRemove)
 {
-	/*two pointer one is helper that get the priveus node and one that run on the list*/
+	/* two pointer one is helper that get the priveus node and one that run on the list */
 	symbolListPtr current = symbolListHead;
 	symbolListPtr helper=symbolListHead-1;
-	/*if the list is empty the function return with a messege that the list is empty*/
+	/*if the list is empty the function return with a messege that the list is empty */
 	if(symbolListHead == NULL){
 		printf("\n the list is empty\n");
 		return;
 	}
-/*run on the list with str cmp if value equal to zero (mean that the name is equal to the given) the curret node next replaced with the next
-of the helper and get freed then the function break )*/
-	while(current->next != NULL) {
-			if(strcmp(current->symbol.name, nameToRemove)==0)
-			{
-				helper->next=current->next;
-				free(current);
-				break;
-			}
-			current = current->next;
-			helper = helper->next;
 
+	/*
+	* run on the list with str cmp if value equal to zero
+	* (mean that the name is equal to the given) the curret node next replaced with the next
+	* of the helper and get freed then the function break.
+	 */
+	while(current->next != NULL) {
+		if (strcmp(current->symbol.name, nameToRemove) == 0)
+		{
+			helper->next=current->next;
+			free(current);
+			break;
 		}
+		current = current->next;
+		helper = helper->next;
+
+	}
 }

@@ -37,3 +37,5 @@ void printSymbolList();
 
 /* push symbol to list */
 void pushSymbolToList(Symbol);
+/* remove node from symbol to list */
+void removeFromSymbolList(char *nameToRemove);
