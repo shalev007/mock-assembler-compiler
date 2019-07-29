@@ -1,20 +1,26 @@
 #include "symbolprocess.h"
 #include "symbollist.h"
 
-char ** convertLineToWordsArray(char *line);
+char ** convert_line_to_words_array(char *line);
 
 bool is_external(char word[]);
 
 bool is_entry(char word[]);
 
+void handle_external_symbol(char ** words);
+
 void process_symbol(char *line)
 {
-	int i = 0;
-	char ** words = convertLineToWordsArray(line);
-	/* loop through each word in the line*/
-	while(words[i]) {
-		printf("words[%d]: %s\n", i, words[i]);
-		i++;
+	char ** words = convert_line_to_words_array(line);
+
+	/* ignore entry type symbols */
+	if(is_entry(words[0])) {
+		return;
+	}
+
+	/* handle external symbols */
+	if(is_external(words[0])) {
+		handle_external_symbol(words);
 	}
 	return;
 }
@@ -22,7 +28,7 @@ void process_symbol(char *line)
 /**
  * converts a string to an array of words without the whitespaces
  */
-char ** convertLineToWordsArray(char *line)
+char ** convert_line_to_words_array(char *line)
 {
 	char * nextWord;
 	char ** wordArray;
@@ -54,6 +60,10 @@ char ** convertLineToWordsArray(char *line)
 	wordArray[i] = (char *) malloc(sizeof(nextWord) * sizeof(char));
 	wordArray[i] = NULL;
 
+	/* free alloctated spaces */
+	free(lineClone);
+	free(nextWord);
+	
 	return wordArray;
 }
 
@@ -79,4 +89,19 @@ bool is_entry(char word[])
 	}
 
 	return false;
+}
+
+void handle_external_symbol(char ** words)
+{
+	Symbol symbol;
+
+	/* create symbol */
+	symbol.name = words[1];
+	symbol.type = EMPTY;
+	symbol.value = EXTERNAL_ADDRESS_VALUE;
+	symbol.isMakro = false;
+	symbol.isExternal = true;
+
+	/* add to symbols list */
+	addSymbol(symbol);
 }

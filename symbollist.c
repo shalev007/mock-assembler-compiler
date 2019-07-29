@@ -76,3 +76,25 @@ void removeFromSymbolList(char *nameToRemove)
 
 	}
 }
+
+bool isInSymbolsList(Symbol symbol)
+{
+	symbolListPtr current = symbolListHead;
+	if(current != NULL) {
+		while(current != NULL) {
+			if (strcmp(current->symbol.name, symbol.name) == 0) {
+				return true;
+			}
+			current = current->next;
+		}
+	}
+
+	return false;
+}
+
+void addSymbol(Symbol symbol)
+{
+	if(!isInSymbolsList(symbol)) {
+		pushSymbolToList(symbol);
+	}
+}
