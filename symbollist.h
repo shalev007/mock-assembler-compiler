@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
 /* type of symbol */
 enum symbolType {EMPTY, DATA, STRING};
