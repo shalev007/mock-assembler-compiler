@@ -15,6 +15,8 @@ void handle_external_symbol(char ** words);
 
 void handle_macro_symbol(char ** words);
 
+void handle_symbol_assign(char ** words);
+
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
@@ -31,7 +33,7 @@ void process_symbol(char *line)
 		return;
 
 	}else if(is_symbol_assign(words)) {
-
+		handle_symbol_assign(words);
 	}
 
 
@@ -103,6 +105,9 @@ bool is_entry(char word[])
 	return false;
 }
 
+/**
+ * checks weather sign is the .define key word
+ */
 bool is_macro(char word[])
 {
 	if(strcmp(MACRO_SIGN, word) == 0) {
@@ -112,6 +117,9 @@ bool is_macro(char word[])
 	return false;
 }
 
+/**
+ * checks weather sign a regular symbol assign
+ */
 bool is_symbol_assign(char ** words)
 {
 	int i = 0;
@@ -130,6 +138,9 @@ bool is_symbol_assign(char ** words)
 	return false;
 }
 
+/**
+ * adds symbol to list
+ */
 void handle_external_symbol(char ** words)
 {
 	Symbol symbol;
@@ -145,6 +156,9 @@ void handle_external_symbol(char ** words)
 	add_symbol_to_list(symbol);
 }
 
+/**
+ * adds symbol to list
+ */
 void handle_macro_symbol(char ** words)
 {
 	int i = 0;
@@ -170,4 +184,9 @@ void handle_macro_symbol(char ** words)
 
 	/* add to symbols list */
 	add_symbol_to_list(symbol);
+}
+
+void handle_symbol_assign(char ** words)
+{
+	
 }

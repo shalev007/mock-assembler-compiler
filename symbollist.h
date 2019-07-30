@@ -1,7 +1,6 @@
 /**
 * structure of a link list that contain a struct of a symbol with parameters
 */
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
