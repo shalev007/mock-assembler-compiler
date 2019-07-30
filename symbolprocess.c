@@ -7,19 +7,22 @@ bool is_external(char word[]);
 
 bool is_entry(char word[]);
 
+bool is_macro(char word[]);
+
 void handle_external_symbol(char ** words);
+
+void handle_macro_symbol(char ** words);
 
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
-	/* ignore entry type symbols */
-	if(is_entry(words[0])) {
-		return;
-	}
 
-	/* handle external symbols */
-	if(is_external(words[0])) {
+	if(is_entry(words[0])) {/* ignore entry type symbols */
+		return;
+	}else if(is_external(words[0])) {/* handle external symbols */
 		handle_external_symbol(words);
+	}else if(is_macro(words[0])) {/* handle macro symbols */
+		handle_macro_symbol(words);
 	}
 	return;
 }
@@ -89,6 +92,15 @@ bool is_entry(char word[])
 	return false;
 }
 
+bool is_macro(char word[])
+{
+	if(strcmp(MACRO_SIGN, word) == 0) {
+		return true;
+	}
+
+	return false;
+}
+
 void handle_external_symbol(char ** words)
 {
 	Symbol symbol;
@@ -99,6 +111,32 @@ void handle_external_symbol(char ** words)
 	symbol.value = EXTERNAL_ADDRESS_VALUE;
 	symbol.isMacro = false;
 	symbol.isExternal = true;
+
+	/* add to symbols list */
+	add_symbol_to_list(symbol);
+}
+
+void handle_macro_symbol(char ** words)
+{
+	int i = 0;
+	Symbol symbol;
+	int macroValue;
+
+	/* prepare macro valus */
+	while(words[i]) {
+		/* get value after "=" sign */
+		if(strcmp(words[i], "=") == 0) {
+			macroValue = atoi(words[i+1]); /*TODO: handle array type*/
+		}
+		i++;
+	}
+
+	/* prepare symbol */
+	symbol.name = words[1];
+	symbol.type = EMPTY;
+	symbol.value = macroValue;
+	symbol.isMacro = true;
+	symbol.isExternal = false;
 
 	/* add to symbols list */
 	add_symbol_to_list(symbol);
