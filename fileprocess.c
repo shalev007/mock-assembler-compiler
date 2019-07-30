@@ -1,6 +1,9 @@
 #include "fileprocess.h"
 #include "symbolprocess.h"
 
+bool is_empty(char line[]);
+
+bool is_comment(char line []);
 
 void process_file(char *filename)
 {

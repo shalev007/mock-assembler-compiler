@@ -1,5 +1,6 @@
 #include "symbolprocess.h"
 #include "symbollist.h"
+#include "symbol.h"
 
 char ** convert_line_to_words_array(char *line);
 
@@ -20,7 +21,6 @@ void handle_symbol_assign(char ** words);
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
-
 	if(is_entry(words[0])) {/* ignore entry type symbols */
 		return;
 
@@ -188,5 +188,5 @@ void handle_macro_symbol(char ** words)
 
 void handle_symbol_assign(char ** words)
 {
-	
+	printf("%s\n", get_symbol_name(words));
 }
