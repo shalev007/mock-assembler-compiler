@@ -5,7 +5,7 @@
  * print all the values in the list for the head node to EOF
  * if the list is empty print to the user
  */
-void printSymbolList()
+void print_symbol_list()
 {
 	symbolListPtr current = symbolListHead;
 
@@ -26,7 +26,7 @@ void printSymbolList()
 	}
 }
 
-void pushSymbolToList(Symbol symbol)
+void push_symbol_to_list(Symbol symbol)
 {
 	symbolListPtr current = symbolListHead;
 	/* if head is empty*/
@@ -48,7 +48,7 @@ void pushSymbolToList(Symbol symbol)
 }
 
 /* remove ONE item from list with the name value the same to the given name */
-void removeFromSymbolList(char *nameToRemove)
+void remove_from_symbol_list(char *nameToRemove)
 {
 	/* two pointer one is helper that get the priveus node and one that run on the list */
 	symbolListPtr current = symbolListHead;
@@ -77,7 +77,7 @@ void removeFromSymbolList(char *nameToRemove)
 	}
 }
 
-bool isInSymbolsList(Symbol symbol)
+bool is_in_symbol_list(Symbol symbol)
 {
 	symbolListPtr current = symbolListHead;
 	if(current != NULL) {
@@ -92,9 +92,9 @@ bool isInSymbolsList(Symbol symbol)
 	return false;
 }
 
-void addSymbol(Symbol symbol)
+void add_symbol_to_list(Symbol symbol)
 {
-	if(!isInSymbolsList(symbol)) {
-		pushSymbolToList(symbol);
+	if(!is_in_symbol_list(symbol)) {
+		push_symbol_to_list(symbol);
 	}
 }

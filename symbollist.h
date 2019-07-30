@@ -33,14 +33,14 @@ typedef struct node {
 symbolListPtr symbolListHead;
 
 /* print symbol list */
-void printSymbolList();
+void print_symbol_list();
 
 /* push symbol to list */
-void pushSymbolToList(Symbol);
+void push_symbol_to_list(Symbol);
 
 /* remove node from symbol to list */
-void removeFromSymbolList(char *nameToRemove);
+void remove_from_symbol_list(char *nameToRemove);
 
-bool isInSymbolsList(Symbol symbol);
+bool is_in_symbol_list(Symbol symbol);
 
-void addSymbol(Symbol symbol);
+void add_symbol_to_list(Symbol symbol);

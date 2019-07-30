@@ -63,7 +63,7 @@ char ** convert_line_to_words_array(char *line)
 	/* free alloctated spaces */
 	free(lineClone);
 	free(nextWord);
-	
+
 	return wordArray;
 }
 
@@ -103,5 +103,5 @@ void handle_external_symbol(char ** words)
 	symbol.isExternal = true;
 
 	/* add to symbols list */
-	addSymbol(symbol);
+	add_symbol_to_list(symbol);
 }
