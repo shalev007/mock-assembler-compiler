@@ -19,7 +19,7 @@ void print_symbol_list()
 		printf("name: %s\n",current->symbol.name);
 		printf("type: %d\n",current->symbol.type);
 		printf("value: %d\n",current->symbol.value);
-		printf("isMakro: %d\n",current->symbol.isMakro);
+		printf("isMacro: %d\n",current->symbol.isMacro);
 		printf("isExternal: %d\n",current->symbol.isExternal);
 		printf("--------------------------\n");
 		current = current->next;
@@ -94,7 +94,10 @@ bool is_in_symbol_list(Symbol symbol)
 
 void add_symbol_to_list(Symbol symbol)
 {
-	if(!is_in_symbol_list(symbol)) {
-		push_symbol_to_list(symbol);
+	if(is_in_symbol_list(symbol)) {
+		printf("WARNING: %s declared twice, ignored.\n", symbol.name);
+		return;
 	}
+
+	push_symbol_to_list(symbol);
 }

@@ -12,7 +12,6 @@ void handle_external_symbol(char ** words);
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
-
 	/* ignore entry type symbols */
 	if(is_entry(words[0])) {
 		return;
@@ -61,7 +60,6 @@ char ** convert_line_to_words_array(char *line)
 	wordArray[i] = NULL;
 
 	/* free alloctated spaces */
-	free(lineClone);
 	free(nextWord);
 
 	return wordArray;
@@ -99,7 +97,7 @@ void handle_external_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = EXTERNAL_ADDRESS_VALUE;
-	symbol.isMakro = false;
+	symbol.isMacro = false;
 	symbol.isExternal = true;
 
 	/* add to symbols list */
