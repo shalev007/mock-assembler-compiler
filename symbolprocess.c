@@ -9,6 +9,8 @@ bool is_entry(char word[]);
 
 bool is_macro(char word[]);
 
+bool is_symbol_assign(char ** words);
+
 void handle_external_symbol(char ** words);
 
 void handle_macro_symbol(char ** words);
@@ -19,11 +21,20 @@ void process_symbol(char *line)
 
 	if(is_entry(words[0])) {/* ignore entry type symbols */
 		return;
+
 	}else if(is_external(words[0])) {/* handle external symbols */
 		handle_external_symbol(words);
+		return;
+
 	}else if(is_macro(words[0])) {/* handle macro symbols */
 		handle_macro_symbol(words);
+		return;
+
+	}else if(is_symbol_assign(words)) {
+
 	}
+
+
 	return;
 }
 
@@ -101,6 +112,24 @@ bool is_macro(char word[])
 	return false;
 }
 
+bool is_symbol_assign(char ** words)
+{
+	int i = 0;
+	char * word;
+	unsigned wordLength;
+
+	while(words[i]) {
+		word = words[i];
+		wordLength = strlen(words[i]);
+		/* checks if the line is variable assign command */
+		if(word[wordLength-1] == SYMBOL_ASSIGN_SIGN) {
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+
 void handle_external_symbol(char ** words)
 {
 	Symbol symbol;
@@ -126,7 +155,8 @@ void handle_macro_symbol(char ** words)
 	while(words[i]) {
 		/* get value after "=" sign */
 		if(strcmp(words[i], "=") == 0) {
-			macroValue = atoi(words[i+1]); /*TODO: handle array type*/
+			macroValue = atoi(words[i+1]);
+			break;
 		}
 		i++;
 	}

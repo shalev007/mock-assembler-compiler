@@ -9,7 +9,7 @@ void process_file(char *filename)
     /* is valid file */
 	if((file = fopen(filename, "r"))) {
 		/* read each line */
-		while(fgets(line, MAX_LINE_INPUT, file)){
+		while(fgets(line, MAX_LINE_INPUT, file)) {
 			/* skips comment lines */
 			if(!is_comment(line)) {
 				/*symbol process*/
