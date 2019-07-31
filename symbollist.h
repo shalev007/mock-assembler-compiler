@@ -7,7 +7,11 @@
 #include <stdlib.h>
 
 /* type of symbol */
-enum symbolType {EMPTY, DATA, COMMAND};
+typedef enum symbolType {
+	EMPTY,
+	DATA,
+	COMMAND
+} SymbolType;
 
 
 /* the stract and the parameters of a symbol */

@@ -6,7 +6,7 @@ symbolprocess.o: symbolprocess.c symbolprocess.h symbollist.h
 	gcc -c -ansi -pedantic -Wall symbolprocess.c -o symbolprocess.o
 symbollist.o: symbollist.c symbollist.h
 	gcc -c -ansi -pedantic -Wall symbollist.c -o symbollist.o
-symbol.o: symbol.c symbol.h
+symbol.o: symbol.c symbol.h symbollist.h
 	gcc -c -ansi -pedantic -Wall symbol.c -o symbol.o
 main.o: main.c fileprocess.h
 	gcc -c -ansi -pedantic -Wall main.c -o main.o
