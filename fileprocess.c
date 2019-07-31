@@ -3,8 +3,6 @@
 
 bool is_empty(char line[]);
 
-bool is_comment(char line []);
-
 void process_file(char *filename)
 {
 	FILE *file;
@@ -13,9 +11,8 @@ void process_file(char *filename)
 	if((file = fopen(filename, "r"))) {
 		/* read each line */
 		while(fgets(line, MAX_LINE_INPUT, file)) {
-			/* skips comment lines */
-			if(!is_comment(line)) {
-				/*symbol process*/
+			/* skips comment and empty lines */
+			if(!is_empty(line)) {
 				process_symbol(line);
 			}
 		}
@@ -24,11 +21,22 @@ void process_file(char *filename)
 	}
 }
 
-bool is_comment(char line[])
+bool is_empty(char line[])
 {
-	if(((char) line[0]) == COMMENT_SIGN) {
-		return true;
-	}
+	unsigned i = 0;
+	bool isEmpty = true;
 
-	return false;
+	while(line[i]) {
+		/* checks if char is empty (whitespace, tab, new line...)*/
+		if(!isspace(line[i])) {
+			/* if first character is a comment sign */
+			if(line[i] == COMMENT_SIGN) {
+				return true;
+			}
+			isEmpty = false;
+			break;
+		}
+		i++;
+	}
+	return isEmpty;
 }
