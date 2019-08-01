@@ -1,6 +1,6 @@
-#include "instructionsregister.h"
-#include "symbollist.h"
 #include "symbol.h"
+#include "symbollist.h"
+#include "instructionsregister.h"
 
 bool is_valid_symbol_data_type(char * type);
 
@@ -54,7 +54,11 @@ unsigned int get_symbol_type(char ** words)
 			printf("unknown command %s\n", words[1]);
 			exit(0);
 		}
+
+		type = COMMAND;
 	}
+
+
 	return type;
 }
 
@@ -69,6 +73,8 @@ bool is_valid_symbol_data_type(char * type)
 
 bool is_valid_symbol_command_type(char * command)
 {
-	get_command_id(command);
+	if(is_command(command)) {
+		return true;
+	}
 	return false;
 }
