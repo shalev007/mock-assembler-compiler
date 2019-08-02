@@ -74,7 +74,7 @@ unsigned int calculate_symbol_memory_size(char ** words, int type, char * name)
 
 	if (type == COMMAND) {
 		/* calculate command */
-		calculate_command_space(data);
+		size = calculate_command_space(data);
 	} else if (type == DATA) {
 		/* calculate data */
 	}

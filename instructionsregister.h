@@ -2,15 +2,19 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define IC_DEFAULT_VALUE 100
+#define MAX_REGISTERS 8
+#define IMMEDIATE_SYMBOL '#'
 
 /* type of addressing mode */
 typedef enum addressingMode {
-	IMMEDIATE,
-	DIRECT,
-	INDEXED,
-	REGISTER
+	NAM = -1, /* not an address mode */
+	IMMEDIATE = 0,
+	DIRECT = 1,
+	INDEXED = 2,
+	REGISTER = 3
 } AddressingMode;
 
 /* command struct */
