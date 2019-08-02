@@ -10,5 +10,7 @@ instructionsregister.o: instructionsregister.c instructionsregister.h
 	gcc -c -ansi -pedantic -Wall instructionsregister.c -o instructionsregister.o
 symbol.o: symbol.c symbol.h symbollist.h instructionsregister.h
 	gcc -c -ansi -pedantic -Wall symbol.c -o symbol.o
+decimalToBin.o: decimalToBin.c decimalToBin.h
+	gcc -c -ansi -pedantic -Wall decimalToBin.c -o decimalToBin.o
 main.o: main.c fileprocess.h
 	gcc -c -ansi -pedantic -Wall main.c -o main.o
