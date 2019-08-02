@@ -116,6 +116,10 @@ Command command_list[16] = {
 	}
 };
 
+extern int get_file_line();
+
+extern void set_error_mode();
+
 bool validate_command(char ** commandline);
 
 bool validate_command_addressing_mode(char * name, AddressingMode dest, AddressingMode src);
@@ -232,7 +236,8 @@ int calculate_command_space(char ** commandline)
 bool validate_command(char ** commandline)
 {
 	if(!is_command(commandline[0])) {
-		printf("%s is not a valid command...\n", commandline[0]); /*TODO: continue and add error flag to true and file read line number*/
+		printf("%s is not a valid command on line %d\n", commandline[0], get_file_line());
+		set_error_mode();
 		return false;
 	}
 
@@ -249,27 +254,32 @@ bool validate_command_addressing_mode(char * name, AddressingMode dest, Addressi
 		if (is_empty_addressing_mode(dest) && is_empty_addressing_mode(src)) {
 			return true;
 		} else {
-			printf("command %s cannot recive any arguments\n", command.name);/*TODO: continue and add error flag to true and file read line number*/
+			printf("command %s cannot recive any arguments on line %d\n", command.name, get_file_line());
+			set_error_mode();
 			return false;
 		}
 	}
 
 	if (!is_empty_command_operand_src(command)) {
 		if (is_empty_addressing_mode(src)) {
-			printf("command %s must recive source argument\n", command.name);/*TODO: continue and add error flag to true and file read line number*/
+			printf("command %s must recive source argument on line %d\n", command.name, get_file_line());
+			set_error_mode();
 			return false;
 		}else if (!is_addressing_mode_allowed_by_command(src, command.allowedAddressingsSrc)) {
-			printf("source argument is not alowed by command %s \n", command.name);/*TODO: continue and add error flag to true and file read line number*/
+			printf("source argument is not alowed by command %s on line %d\n", command.name, get_file_line());
+			set_error_mode();
 			return false;
 		}
 	}
 
 	if (!is_empty_command_operand_dest(command)) {
 		if (is_empty_addressing_mode(dest)) {
-			printf("command %s must recive destination argument\n", command.name);/*TODO: continue and add error flag to true and file read line number*/
+			printf("command %s must recive destination argument on line %d\n", command.name, get_file_line());
+			set_error_mode();
 			return false;
 		}else if (!is_addressing_mode_allowed_by_command(dest, command.allowedAddressingsDest)) {
-			printf("destination argument is not alowed by command %s \n", command.name);/*TODO: continue and add error flag to true and file read line number*/
+			printf("destination argument is not alowed by command %s on line %d\n", command.name, get_file_line());
+			set_error_mode();
 			return false;
 		}
 	}
@@ -289,7 +299,8 @@ AddressingMode addressing_mode_type(char * operand)
 	} else if(is_registor_name(operand)) { /* REGISTER */
 		/* validate registor name */
 		if (!is_valid_registor(operand)) {
-			printf("%c is not a valid registor \n", operand[1]); /*TODO: continue and add error flag to true and file read line number*/
+			printf("%c is not a valid registor on line %d\n", operand[1], get_file_line());
+			set_error_mode();
 			return NAM;
 		}
 		return REGISTER;

@@ -2,6 +2,10 @@
 #include "symbollist.h"
 #include "instructionsregister.h"
 
+extern int get_file_line();
+
+extern void set_error_mode();
+
 bool is_valid_symbol_data_type(char * type);
 
 bool is_valid_symbol_command_type(char * command);
@@ -42,8 +46,8 @@ unsigned int get_symbol_type(char ** words)
 		if (words[i][0] == '.') {
 			/* validate approved type */
 			if(!is_valid_symbol_data_type(words[i])) {
-				printf("unknown data type %s\n", words[i]);
-				exit(0); /*TODO: continue and add error flag to true and file read line number*/
+				printf("unknown data type %s on line %d\n", words[i], get_file_line());
+				set_error_mode();
 			}
 			type = DATA;
 			break;
@@ -53,8 +57,8 @@ unsigned int get_symbol_type(char ** words)
 
 	if(type != DATA) {
 		if(!is_valid_symbol_command_type(words[1])) {/* validate COMMAND type */
-			printf("unknown command %s\n", words[1]);
-			exit(0); /*TODO: continue and add error flag to true and file read line number*/
+			printf("unknown command %s on line %d\n", words[1], get_file_line());
+			set_error_mode();
 		}
 
 		type = COMMAND;

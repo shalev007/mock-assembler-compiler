@@ -7,3 +7,4 @@
 #define COMMENT_SIGN ';'
 
 void process_file(char *filename);
+int get_file_line();
