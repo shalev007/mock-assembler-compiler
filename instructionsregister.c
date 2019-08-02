@@ -1,5 +1,6 @@
 #include "instructionsregister.h"
 
+int _IC = IC_DEFAULT_VALUE;
 
 const char * command_list[] = {
 	"mov", /* id: 0 */
@@ -39,4 +40,15 @@ bool is_command(char * command)
 	}
 
 	return false;
+}
+
+int calculate_command_space(char ** commandline)
+{
+	int i = 0;
+
+	while(commandline[i]) {
+		printf("%s\n", commandline[i]);
+		i++;
+	}
+	return 0;
 }

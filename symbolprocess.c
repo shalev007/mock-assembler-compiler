@@ -188,6 +188,11 @@ void handle_macro_symbol(char ** words)
 
 void handle_symbol_assign(char ** words)
 {
-	printf("name: %s\n", get_symbol_name(words));
-	printf("type: %d\n", get_symbol_type(words));
+	char * symbolName = get_symbol_name(words);
+	SymbolType symbolType = get_symbol_type(words);
+	printf("\n------------------------\n");
+	printf("name: %s\n", symbolName);
+	printf("type: %d\n", symbolType);
+	printf("size: %d\n", calculate_symbol_memory_size(words, symbolType, symbolName));
+	printf("\n------------------------");
 }
