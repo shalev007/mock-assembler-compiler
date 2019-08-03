@@ -1,10 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define CELL_BIT_SIZE 14
+
+typedef enum machineCode {
+	A,
+	R,
+	E
+} MachineCode;
+
 typedef struct outputLine {
 	int lineNumber;
 	int *bits;
 } OutputLine;
+
 
 typedef struct outputLineItem * OutputLinePtr;
 

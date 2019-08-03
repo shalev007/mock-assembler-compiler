@@ -115,3 +115,29 @@ int get_symbol_value_by_name(char * name)
 
 	return -1;
 }
+
+bool is_symbol_external(char * name)
+{
+	symbolListPtr current = symbolListHead;
+	while(current != NULL) {
+		if (strcmp(current->symbol.name, name) == 0) {
+			return current->symbol.isExternal;
+		}
+		current = current->next;
+	}
+
+	return false;
+}
+
+bool is_symbol_in_list(char * name)
+{
+	symbolListPtr current = symbolListHead;
+	while(current != NULL) {
+		if (strcmp(current->symbol.name, name) == 0) {
+			return true;
+		}
+		current = current->next;
+	}
+
+	return false;
+}

@@ -121,6 +121,10 @@ extern int get_file_line();
 
 extern void set_error_mode();
 
+extern bool is_symbol_external(char * name);
+
+extern bool is_symbol_in_list(char * name);
+
 bool validate_command(char ** commandline);
 
 bool validate_command_addressing_mode(char * name, AddressingMode dest, AddressingMode src);
@@ -148,6 +152,12 @@ int calculate_space_by_addressing_modes(AddressingMode dest, AddressingMode src)
 int calculate_space_by_addressing_mode(AddressingMode);
 
 int calculate_number_of_operands(char ** commandline, char * commandName);
+
+char * get_array_name(char * name);
+
+MachineCode get_operand_mchine_code(char * op);
+
+int * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode);
 
 signed int get_command_id(char * command)
 {
@@ -444,6 +454,49 @@ int calculate_number_of_operands(char ** commandline, char * commandName)
 	return numOfOperands;
 }
 
+char * get_array_name(char * name)
+{
+	int i = 0;
+	int counter = 0;
+	char * newName = (char *) malloc(sizeof(char));
+	while(name[i]) {
+		if (name[i] == '[') {
+			break;
+		}
+		newName = (char *) realloc(newName, (counter + 1) * sizeof(char));
+		newName[counter] = name[i];
+		counter++;
+		i++;
+	}
+	newName[counter+1] = '\0';
+	return newName;
+}
+
+MachineCode get_operand_mchine_code(char * op)
+{
+
+	AddressingMode opAdd = addressing_mode_type(op);
+	char * name = op;
+
+	if (opAdd == NAM) {
+		return A;
+	}
+
+	if (opAdd == INDEXED) {
+		name = get_array_name(name);
+	}
+
+	if (is_symbol_in_list(name)) {
+		if (is_symbol_external(name)) {
+			return E;
+		}
+
+		return R;
+	}
+
+	return A;
+}
+
 void instruction_to_bits(char ** commandline)
 {
 	int numOfOperands = 0;
@@ -468,11 +521,33 @@ void instruction_to_bits(char ** commandline)
 		src = commandline[1];
 	}
 
-	destAddressMode = addressing_mode_type(dest);
-	srcAddressMode = addressing_mode_type(src);
+	destAddressMode = addressing_mode_type(dest) == NAM ? IMMEDIATE : addressing_mode_type(dest);
+	srcAddressMode = addressing_mode_type(src) == NAM ? IMMEDIATE : addressing_mode_type(src);
 	commandCode = get_command_id(commandName);
-	
-	printf("src: %d, ", srcAddressMode);
-	printf("dest: %d, ", destAddressMode);
-	printf("commandCode: %d\n", commandCode);
+
+	build_command_bits(commandCode, srcAddressMode, destAddressMode);
+}
+
+
+
+int * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode)
+{
+	int i = 0;
+	int * bits = malloc(CELL_BIT_SIZE * sizeof(int));
+	/*
+	int * commandCodeBits = number_to_bit(commandCode, 4);
+	int * srcAddressModeBits = number_to_bit(srcAddressMode, 2);
+	int * destAddressModeBits = number_to_bit(destAddressMode, 2);
+	/* not in use */
+	bits[0] = 0;
+	bits[1] = 0;
+	bits[2] = 0;
+	bits[3] = 0;
+
+	while(i < CELL_BIT_SIZE) {
+		printf("%d", bits[i]);
+		i++;
+	}
+	printf("\n");
+	return bits;
 }
