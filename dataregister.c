@@ -1,4 +1,5 @@
 #include "dataregister.h"
+#include "output.h"
 
 int _DC = DEFAULT_VALUE;
 
@@ -119,4 +120,9 @@ int get_data_memory_amount()
 void reset_data_counter()
 {
 	_DC = DEFAULT_VALUE;
+}
+
+void data_to_bits(char ** words)
+{
+	
 }

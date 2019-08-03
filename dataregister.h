@@ -15,6 +15,8 @@ typedef enum {
 
 int calculate_data_space(char ** data);
 
+void data_to_bits(char ** words);
+
 int get_data_counter(int size);
 
 int get_data_memory_amount();

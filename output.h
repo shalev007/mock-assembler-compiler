@@ -14,3 +14,5 @@ typedef struct outputLineItem {
 } OutputLineItem;
 
 void push_line_to_list(OutputLine line);
+
+void print_outputline_list();

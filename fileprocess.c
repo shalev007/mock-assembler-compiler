@@ -52,7 +52,6 @@ void process_file(char *filename)
 			/* skips comment and empty lines */
 			if(!is_empty(line)) {
 				second_loop_process(line);
-				return;
 			}
 		}
 

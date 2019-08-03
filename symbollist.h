@@ -48,3 +48,5 @@ void remove_from_symbol_list(char *nameToRemove);
 bool is_in_symbol_list(Symbol symbol);
 
 void add_symbol_to_list(Symbol symbol);
+
+int get_symbol_value_by_name(char * name);

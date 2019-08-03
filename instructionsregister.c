@@ -1,4 +1,5 @@
 #include "instructionsregister.h"
+#include "output.h"
 
 int _IC = IC_DEFAULT_VALUE;
 
@@ -430,4 +431,40 @@ int get_instructions_memory_amount()
 void reset_instructions_counter()
 {
 	_IC = IC_DEFAULT_VALUE;
+}
+
+void instruction_to_bits(char ** commandline)
+{
+	int i = 0;
+	int numOfOperands = 0;
+	char * dest = NULL;
+	char * src = NULL;
+	char * commandName;
+
+	AddressingMode destAddressMode;
+	AddressingMode srcAddressMode;
+
+	commandName = commandline[0];
+	/* calculate number of operands */
+	while(commandline[i]) {
+		if(strcmp(commandline[i], commandName) != 0) {
+			numOfOperands++;
+		}
+		i++;
+	}
+
+	/* assign destination and source operands */
+	if(numOfOperands == 1) {
+		dest = commandline[1];
+
+	} else if(numOfOperands == 2) {
+		dest = commandline[2];
+		src = commandline[1];
+	}
+
+	destAddressMode = addressing_mode_type(dest);
+	srcAddressMode = addressing_mode_type(src);
+
+	printf("%d ", srcAddressMode);
+	printf("%d\n", destAddressMode);
 }

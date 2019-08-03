@@ -102,3 +102,16 @@ void add_symbol_to_list(Symbol symbol)
 
 	push_symbol_to_list(symbol);
 }
+
+int get_symbol_value_by_name(char * name)
+{
+	symbolListPtr current = symbolListHead;
+	while(current != NULL) {
+		if (strcmp(current->symbol.name, name) == 0) {
+			return current->symbol.value;
+		}
+		current = current->next;
+	}
+
+	return -1;
+}

@@ -11,8 +11,6 @@ bool is_valid_symbol_data_type(char * type);
 
 bool is_valid_symbol_command_type(char * command);
 
-char ** remove_symbol_name(char ** words, char * name);
-
 /**
  * returns symbol name/label
  */

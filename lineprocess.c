@@ -1,10 +1,12 @@
 #include "lineprocess.h"
 #include "symbollist.h"
 #include "symbol.h"
-#include "output.h"
 
 int instructions_memory = 0;
+
 int data_memory = 0;
+
+char * entry_array = NULL;
 
 extern int get_instructions_counter(int size);
 
@@ -17,6 +19,10 @@ extern int calculate_command_space(char ** commandline);
 extern void reset_instructions_counter();
 
 extern void reset_data_counter();
+
+extern void instruction_to_bits(char ** words);
+
+extern void data_to_bits(char ** words);
 
 char ** convert_line_to_words_array(char *line);
 
@@ -35,6 +41,14 @@ void handle_macro_symbol(char ** words);
 void handle_symbol_assign(char ** words);
 
 void handle_command(char ** words);
+
+void add_to_entry_list(char * entry);
+
+void convert_symbol_assign_to_ouput_item(char ** words);
+
+void convert_command_to_output_item(char ** words);
+
+void convert_data_to_output_item(char ** words);
 
 void first_loop_process(char *line)
 {
@@ -66,17 +80,23 @@ void first_loop_process(char *line)
 
 void second_loop_process(char *line)
 {
-	OutputLine outputline;
-	int x[14] = {1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0};
-	outputline.lineNumber = 135;
-	outputline.bits = x;
+	char ** words = convert_line_to_words_array(line);
 
-	push_line_to_list(outputline);
-	push_line_to_list(outputline);
-	print_outputline_list();
-	return;
+	if (is_macro(words[0])) {/* ignore macro */
+		return;
 
-	/*char ** words = convert_line_to_words_array(line);*/
+	}else if(is_entry(words[0])) { /* add to entry list */
+		add_to_entry_list(words[1]);
+		return;
+
+	} else if (is_symbol_assign(words)) {
+		convert_symbol_assign_to_ouput_item(words);
+		return;
+
+	} else if (is_command(words[0])) {
+		convert_command_to_output_item(words);
+		return;
+	}
 }
 
 /**
@@ -296,4 +316,34 @@ void set_saved_memory_cells(int instructions, int data)
 {
 	instructions_memory = instructions;
 	data_memory = data;
+}
+
+void add_to_entry_list(char * entry)
+{
+	/* TODO add entry to list */
+	return;
+}
+
+void convert_symbol_assign_to_ouput_item(char ** words)
+{
+	char * name;
+	char ** action;
+	name = get_symbol_name(words);
+	action = remove_symbol_name(words, name);
+
+	if (is_command(action[0])) {
+		convert_command_to_output_item(action);
+	} else { /* is data symbol */
+		convert_data_to_output_item(action);
+	}
+}
+
+void convert_command_to_output_item(char ** words)
+{
+	instruction_to_bits(words);
+}
+
+void convert_data_to_output_item(char ** words)
+{
+	data_to_bits(words);
 }
