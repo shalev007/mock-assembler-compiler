@@ -20,7 +20,7 @@ int * number_to_bit(int numberToBit,int size)
 	return bitNum;
 }
 
-
+/*uses the binary to deicmal to pick one of the spacial symbols*/
 char  number_to_special4(int firstNum,int seccendNum)
 {
   
@@ -29,14 +29,22 @@ char  number_to_special4(int firstNum,int seccendNum)
 	return symbols[whichSymbol];
 
 }
-
+/*calulating two bit of a binary number and gives a number between 0-3*/
 int binary_to_decimal(int firstNum,int seccendNum,int whichBase)
 {
-	int decimalNumber
-
+	int decimalNumber;
+	/*calculating the number given by binnary to decimal formula of two numbers */
 	decimalNumber += firstNum*pow(whichBase,0);
 	decimalNumber += seccendNum*pow(whichBase,1);
 	
 	return decimalNumber;
+
+}
+/*take a char and putting him into an int then useing number to bit to get the ascii code in binary */
+int * char_to_bit(char charToBit,int size)
+{
+	int caster=charToBit;
+
+	return  number_to_bit(int charToBit,int size);
 
 }
