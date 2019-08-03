@@ -1,5 +1,7 @@
 #include <decimalToBin.h>
 
+char symbols [4]={'*','#','%','!'};
+
  /*function that take a nuber and make it a bit with the given size */
 int * number_to_bit(int numberToBit,int size)
 {
@@ -16,4 +18,25 @@ int * number_to_bit(int numberToBit,int size)
 	bitNum[size] = -1;
 
 	return bitNum;
+}
+
+
+char  number_to_special4(int firstNum,int seccendNum)
+{
+  
+	int whichSymbol;
+	whichSymbol=binary_to_decimal(firstNum,seccendNum,2);
+	return symbols[whichSymbol];
+
+}
+
+int binary_to_decimal(int firstNum,int seccendNum,int whichBase)
+{
+	int decimalNumber
+
+	decimalNumber += firstNum*pow(whichBase,0);
+	decimalNumber += seccendNum*pow(whichBase,1);
+	
+	return decimalNumber;
+
 }
