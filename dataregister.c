@@ -99,3 +99,11 @@ int calculate_string_type(char ** data)
 
 	return counter;
 }
+
+int get_data_counter(int size)
+{
+	/* increment counter */
+	_DC += size;
+	/* return last value */
+	return _DC-size;
+}

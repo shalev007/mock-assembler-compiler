@@ -14,3 +14,5 @@ typedef enum {
 } DataType;
 
 int calculate_data_space(char ** data);
+
+int get_data_counter(int size);

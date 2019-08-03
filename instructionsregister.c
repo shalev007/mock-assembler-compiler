@@ -390,10 +390,11 @@ bool is_addressing_mode_allowed_by_command(AddressingMode addressing_mode, Addre
 int calculate_space_by_addressing_modes(AddressingMode dest, AddressingMode src)
 {
 	int space = 1;
-	/**
-	* register type operands share the same memory cell
-	*/
-	if (is_empty_addressing_mode(dest) || (dest == REGISTER && src == REGISTER)) {
+	
+	if (is_empty_addressing_mode(dest)) { /* only command */
+		return space;
+	} else if (dest == REGISTER && src == REGISTER) { /* register type operands share the same memory cell */
+		space += 1;
 		return space;
 	}
 
@@ -410,4 +411,13 @@ int calculate_space_by_addressing_mode(AddressingMode addressing_mode)
 	}
 
 	return 1;
+}
+
+int get_instructions_counter(int size)
+{
+	/* increment counter */
+	_IC += size;
+
+	/* return last value */
+	return _IC - size;
 }

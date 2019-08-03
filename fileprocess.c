@@ -5,6 +5,8 @@ int _courrent_line_number = 0;
 
 bool _error_flag = false;
 
+extern void print_symbol_list(); /* TODO delete when done developing */
+
 bool is_empty(char line[]);
 
 void process_file(char *filename)
@@ -22,6 +24,7 @@ void process_file(char *filename)
 				process_symbol(line);
 			}
 		}
+		print_symbol_list();
 		_courrent_line_number = 0;
 		printf("\n error mode: %d\n", _error_flag);
 	} else {
