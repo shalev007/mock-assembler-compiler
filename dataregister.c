@@ -18,6 +18,8 @@ int calculate_data_type(char ** data);
 
 int calculate_string_type(char ** data);
 
+void reset_data_counter();
+
 int calculate_data_space(char ** data)
 {
 	int size = 0;
@@ -112,4 +114,9 @@ int get_data_counter(int size)
 int get_data_memory_amount()
 {
 	return _DC - DEFAULT_VALUE;
+}
+
+void reset_data_counter()
+{
+	_DC = DEFAULT_VALUE;
 }

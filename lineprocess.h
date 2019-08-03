@@ -10,4 +10,8 @@
 
 void first_loop_process(char *line);
 
+void second_loop_process(char *line)
+
 void update_data_symbols_addresses();
+
+void reset_counters();

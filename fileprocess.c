@@ -29,16 +29,31 @@ void process_file(char *filename)
 				first_loop_process(line);
 			}
 		}
+
+		/* reset line counter */
+		_courrent_line_number = 0;
+
 		/* save memory cells */
 		ic_mem_cells = get_instructions_memory_amount();
 		dc_mem_cells = get_data_memory_amount();
 
 		/* update data symbols adresses after instructions */
 		update_data_symbols_addresses();
+		/* reset ic and dc counters */
+		reset_counters();
 
-		print_symbol_list();
+		rewind(file);
 
-		_courrent_line_number = 0;
+		/* read each line */
+		while(fgets(line, MAX_LINE_INPUT, file)) {
+			/* line counter */
+			_courrent_line_number++;
+			/* skips comment and empty lines */
+			if(!is_empty(line)) {
+				second_loop_process(line);
+			}
+		}
+
 		printf("\n error mode: %d\n", _error_flag);
 	} else {
 		printf("%s does not exist...\n", filename);

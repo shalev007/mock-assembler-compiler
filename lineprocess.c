@@ -10,6 +10,10 @@ extern bool is_command(char * command);
 
 extern int calculate_command_space(char ** commandline);
 
+extern void reset_instructions_counter();
+
+extern void reset_data_counter();
+
 char ** convert_line_to_words_array(char *line);
 
 bool is_external(char word[]);
@@ -54,6 +58,11 @@ void first_loop_process(char *line)
 
 
 	return;
+}
+
+void second_loop_process(char *line)
+{
+	printf("%s\n", line);
 }
 
 /**
@@ -261,4 +270,10 @@ void update_data_symbols_addresses()
 		}
 		current = current->next;
 	}
+}
+
+void reset_counters()
+{
+	reset_instructions_counter();
+	reset_data_counter();
 }

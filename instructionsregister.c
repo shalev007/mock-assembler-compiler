@@ -426,3 +426,8 @@ int get_instructions_memory_amount()
 {
 	return _IC - IC_DEFAULT_VALUE;
 }
+
+void reset_instructions_counter()
+{
+	_IC = IC_DEFAULT_VALUE;
+}
