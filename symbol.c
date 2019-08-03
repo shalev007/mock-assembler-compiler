@@ -1,6 +1,7 @@
 #include "symbol.h"
 #include "symbollist.h"
 #include "instructionsregister.h"
+#include "dataregister.h"
 
 extern int get_file_line();
 
@@ -81,6 +82,7 @@ unsigned int calculate_symbol_memory_size(char ** words, int type, char * name)
 		size = calculate_command_space(data);
 	} else if (type == DATA) {
 		/* calculate data */
+		size = calculate_data_space(data);
 	}
 
 	return size;

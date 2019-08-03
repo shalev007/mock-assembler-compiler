@@ -1,5 +1,5 @@
-main: main.o fileprocess.o symbolprocess.o symbollist.o instructionsregister.o symbol.o
-	gcc -g -ansi  -Wall main.o fileprocess.o symbolprocess.o symbollist.o instructionsregister.o symbol.o -o main
+main: main.o fileprocess.o symbolprocess.o symbollist.o instructionsregister.o dataregister.o symbol.o
+	gcc -g -ansi  -Wall main.o fileprocess.o symbolprocess.o symbollist.o instructionsregister.o dataregister.o symbol.o -o main
 fileprocess.o: fileprocess.c fileprocess.h symbolprocess.h
 	gcc -c -ansi -pedantic -Wall fileprocess.c -o fileprocess.o
 symbolprocess.o: symbolprocess.c symbolprocess.h symbollist.h
@@ -8,7 +8,9 @@ symbollist.o: symbollist.c symbollist.h
 	gcc -c -ansi -pedantic -Wall symbollist.c -o symbollist.o
 instructionsregister.o: instructionsregister.c instructionsregister.h
 	gcc -c -ansi -pedantic -Wall instructionsregister.c -o instructionsregister.o
-symbol.o: symbol.c symbol.h symbollist.h instructionsregister.h
+dataregister.o: dataregister.c
+	gcc -c -ansi -pedantic -Wall dataregister.c -o dataregister.o
+symbol.o: symbol.c symbol.h symbollist.h instructionsregister.h dataregister.h
 	gcc -c -ansi -pedantic -Wall symbol.c -o symbol.o
 decimalToBin.o: decimalToBin.c decimalToBin.h
 	gcc -c -ansi -pedantic -Wall decimalToBin.c -o decimalToBin.o

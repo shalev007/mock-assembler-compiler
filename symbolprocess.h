@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define WORD_SPLIT_TOKENS " ,\n\t"
+#define WORD_SPLIT_TOKENS " ,\n\r\t"
 #define EXTERNAL_SIGN ".extern"
 #define ENTRY_SIGN ".entry"
 #define MACRO_SIGN ".define"

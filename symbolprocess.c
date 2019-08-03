@@ -23,7 +23,7 @@ void remove_whitespaces(char * str);
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
-	
+
 	if(is_entry(words[0])) {/* ignore entry type symbols */
 		return;
 
@@ -197,7 +197,7 @@ void handle_symbol_assign(char ** words)
 	SymbolType symbolType = get_symbol_type(words);
 	printf("\n------------------------\n");
 	printf("name: %s\n", symbolName);
-	printf("type: %d\n", symbolType);
+	printf("type: %s\n", symbolType == COMMAND ? "COMMAND" : "DATA");
 	printf("size: %d\n", calculate_symbol_memory_size(words, symbolType, symbolName));
 	printf("\n------------------------");
 }
