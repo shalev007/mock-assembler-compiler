@@ -1,6 +1,10 @@
 #include "lineprocess.h"
 #include "symbollist.h"
 #include "symbol.h"
+#include "output.h"
+
+int instructions_memory = 0;
+int data_memory = 0;
 
 extern int get_instructions_counter(int size);
 
@@ -62,7 +66,17 @@ void first_loop_process(char *line)
 
 void second_loop_process(char *line)
 {
-	printf("%s\n", line);
+	OutputLine outputline;
+	int x[14] = {1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0};
+	outputline.lineNumber = 135;
+	outputline.bits = x;
+
+	push_line_to_list(outputline);
+	push_line_to_list(outputline);
+	print_outputline_list();
+	return;
+
+	/*char ** words = convert_line_to_words_array(line);*/
 }
 
 /**
@@ -276,4 +290,10 @@ void reset_counters()
 {
 	reset_instructions_counter();
 	reset_data_counter();
+}
+
+void set_saved_memory_cells(int instructions, int data)
+{
+	instructions_memory = instructions;
+	data_memory = data;
 }

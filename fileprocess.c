@@ -36,6 +36,7 @@ void process_file(char *filename)
 		/* save memory cells */
 		ic_mem_cells = get_instructions_memory_amount();
 		dc_mem_cells = get_data_memory_amount();
+		set_saved_memory_cells(ic_mem_cells, dc_mem_cells);
 
 		/* update data symbols adresses after instructions */
 		update_data_symbols_addresses();
@@ -51,6 +52,7 @@ void process_file(char *filename)
 			/* skips comment and empty lines */
 			if(!is_empty(line)) {
 				second_loop_process(line);
+				return;
 			}
 		}
 

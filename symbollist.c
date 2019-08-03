@@ -33,7 +33,7 @@ void push_symbol_to_list(Symbol symbol)
 	/* if head is empty*/
 	if(symbolListHead == NULL) {
 		/* push item to head*/
-		symbolListHead = (symbolListPtr) malloc(sizeof(ListItem));
+		symbolListHead = (symbolListPtr) malloc(sizeof(SymbolListItem));
 		symbolListHead->symbol = symbol;
 		symbolListHead->next = NULL;
 	} else {
@@ -42,7 +42,7 @@ void push_symbol_to_list(Symbol symbol)
 			current = current->next;
 		}
 		/* push symbol to last item */
-		current->next = (symbolListPtr) malloc(sizeof(ListItem));
+		current->next = (symbolListPtr) malloc(sizeof(SymbolListItem));
 		current->next->symbol = symbol;
 		current->next->next = NULL;
 	}

@@ -31,7 +31,7 @@ typedef struct node * symbolListPtr;
 typedef struct node {
 	Symbol symbol;
 	symbolListPtr next;
-}  ListItem;
+}  SymbolListItem;
 
 /* list head */
 symbolListPtr symbolListHead;
