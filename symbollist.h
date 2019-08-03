@@ -19,6 +19,7 @@ typedef struct {
 	char *name;
 	enum symbolType type;
 	int value;
+	int size;
 	bool isMacro;
 	bool isExternal;
 }  Symbol;

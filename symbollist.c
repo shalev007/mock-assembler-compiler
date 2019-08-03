@@ -19,6 +19,7 @@ void print_symbol_list()
 		printf("name: %s\n",current->symbol.name);
 		printf("type: %d\n",current->symbol.type);
 		printf("value: %d\n",current->symbol.value);
+		printf("size: %d\n",current->symbol.size);
 		printf("isMacro: %d\n",current->symbol.isMacro);
 		printf("isExternal: %d\n",current->symbol.isExternal);
 		printf("--------------------------\n");

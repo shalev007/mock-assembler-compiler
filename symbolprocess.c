@@ -2,6 +2,14 @@
 #include "symbollist.h"
 #include "symbol.h"
 
+extern int get_instructions_counter(int size);
+
+extern int get_data_counter(int size);
+
+extern bool is_command(char * command);
+
+extern int calculate_command_space(char ** commandline);
+
 char ** convert_line_to_words_array(char *line);
 
 bool is_external(char word[]);
@@ -18,9 +26,12 @@ void handle_macro_symbol(char ** words);
 
 void handle_symbol_assign(char ** words);
 
+void handle_command(char ** words);
+
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
+
 	if(is_entry(words[0])) {/* ignore entry type symbols */
 		return;
 
@@ -32,8 +43,13 @@ void process_symbol(char *line)
 		handle_macro_symbol(words);
 		return;
 
-	}else if(is_symbol_assign(words)) {
+	}else if(is_symbol_assign(words)) { /* handle symbol assign */
 		handle_symbol_assign(words);
+		return;
+
+	} else if(is_command(words[0])) { /* handle commands */
+		handle_command(words);
+		return;
 	}
 
 
@@ -76,6 +92,8 @@ char ** convert_line_to_words_array(char *line)
 	wordArray[i] = NULL;
 
 	/* free alloctated spaces */
+	lineClone = NULL;
+	free(lineClone);
 	free(nextWord);
 
 	return wordArray;
@@ -149,6 +167,7 @@ void handle_external_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = EXTERNAL_ADDRESS_VALUE;
+	symbol.size = 0;
 	symbol.isMacro = false;
 	symbol.isExternal = true;
 
@@ -179,6 +198,7 @@ void handle_macro_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = macroValue;
+	symbol.value = 0;
 	symbol.isMacro = true;
 	symbol.isExternal = false;
 
@@ -188,11 +208,57 @@ void handle_macro_symbol(char ** words)
 
 void handle_symbol_assign(char ** words)
 {
-	char * symbolName = get_symbol_name(words);
-	SymbolType symbolType = get_symbol_type(words);
-	printf("\n------------------------\n");
-	printf("name: %s\n", symbolName);
-	printf("type: %d\n", symbolType);
-	printf("size: %d\n", calculate_symbol_memory_size(words, symbolType, symbolName));
-	printf("\n------------------------");
+	Symbol symbol;
+	char * symbolName;
+	SymbolType symbolType;
+	int size;
+	int value;
+
+	symbolName = get_symbol_name(words);
+	symbolType = get_symbol_type(words);
+	size = calculate_symbol_memory_size(words, symbolType, symbolName);
+
+	/* differrent value for data and instructions */
+	if (symbolType == COMMAND) {
+		value = get_instructions_counter(size);
+	} else if (symbolType == DATA) {
+		value = get_data_counter(size);
+	}
+
+	/* create symbol */
+	symbol.name = symbolName;
+	symbol.type = symbolType;
+	symbol.value = value;
+	symbol.size = size;
+	symbol.isMacro = false;
+	symbol.isExternal = false;
+
+	add_symbol_to_list(symbol);
+
+	/* free allocated space */
+	symbolName = NULL;
+	free(symbolName);
+}
+
+void handle_command(char ** words)
+{
+	int size = calculate_command_space(words);
+	/* only increment counter */
+	get_instructions_counter(size);
+}
+
+void update_data_symbols_addresses()
+{
+	int ic = get_instructions_counter(0);
+
+	symbolListPtr current = symbolListHead;
+	
+	while(current != NULL) {
+		/* only data symbols */
+		if (current->symbol.type == DATA) {
+			/* updates adres after end of ic*/
+			current->symbol.value += ic;
+		}
+		current = current->next;
+	}
 }

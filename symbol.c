@@ -1,6 +1,11 @@
 #include "symbol.h"
 #include "symbollist.h"
 #include "instructionsregister.h"
+#include "dataregister.h"
+
+extern int get_file_line();
+
+extern void set_error_mode();
 
 bool is_valid_symbol_data_type(char * type);
 
@@ -42,8 +47,8 @@ unsigned int get_symbol_type(char ** words)
 		if (words[i][0] == '.') {
 			/* validate approved type */
 			if(!is_valid_symbol_data_type(words[i])) {
-				printf("unknown data type %s\n", words[i]);
-				exit(0); /*TODO: continue and add error flag to true and file read line number*/
+				printf("unknown data type %s on line %d\n", words[i], get_file_line());
+				set_error_mode();
 			}
 			type = DATA;
 			break;
@@ -53,8 +58,8 @@ unsigned int get_symbol_type(char ** words)
 
 	if(type != DATA) {
 		if(!is_valid_symbol_command_type(words[1])) {/* validate COMMAND type */
-			printf("unknown command %s\n", words[1]);
-			exit(0); /*TODO: continue and add error flag to true and file read line number*/
+			printf("unknown command %s on line %d\n", words[1], get_file_line());
+			set_error_mode();
 		}
 
 		type = COMMAND;
@@ -74,9 +79,10 @@ unsigned int calculate_symbol_memory_size(char ** words, int type, char * name)
 
 	if (type == COMMAND) {
 		/* calculate command */
-		calculate_command_space(data);
+		size = calculate_command_space(data);
 	} else if (type == DATA) {
 		/* calculate data */
+		size = calculate_data_space(data);
 	}
 
 	return size;
