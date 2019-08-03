@@ -32,3 +32,5 @@ bool is_command(char * command);
 int calculate_command_space(char ** commandline);
 
 int get_instructions_counter(int size);
+
+int get_instructions_memory_amount();

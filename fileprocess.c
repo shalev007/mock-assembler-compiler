@@ -7,12 +7,17 @@ bool _error_flag = false;
 
 extern void print_symbol_list(); /* TODO delete when done developing */
 
+extern int get_instructions_memory_amount();
+
+extern int get_data_memory_amount();
+
 bool is_empty(char line[]);
 
 void process_file(char *filename)
 {
 	FILE *file;
     char line[MAX_LINE_INPUT];
+    int ic_mem_cells, dc_mem_cells;
     /* is valid file */
 	if((file = fopen(filename, "r"))) {
 		/* read each line */
@@ -24,7 +29,15 @@ void process_file(char *filename)
 				process_symbol(line);
 			}
 		}
+		/* save memory cells */
+		ic_mem_cells = get_instructions_memory_amount();
+		dc_mem_cells = get_data_memory_amount();
+
+		/* update data symbols adresses after instructions */
+		update_data_symbols_addresses();
+
 		print_symbol_list();
+
 		_courrent_line_number = 0;
 		printf("\n error mode: %d\n", _error_flag);
 	} else {

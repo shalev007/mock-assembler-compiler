@@ -9,3 +9,5 @@
 
 
 void process_symbol(char *line);
+
+void update_data_symbols_addresses();

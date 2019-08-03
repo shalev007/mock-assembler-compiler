@@ -96,7 +96,8 @@ int calculate_string_type(char ** data)
 		}
 		i++;
 	}
-
+	/* for NULL */
+	counter++;
 	return counter;
 }
 
@@ -106,4 +107,9 @@ int get_data_counter(int size)
 	_DC += size;
 	/* return last value */
 	return _DC-size;
+}
+
+int get_data_memory_amount()
+{
+	return _DC - DEFAULT_VALUE;
 }

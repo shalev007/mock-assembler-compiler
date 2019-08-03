@@ -421,3 +421,8 @@ int get_instructions_counter(int size)
 	/* return last value */
 	return _IC - size;
 }
+
+int get_instructions_memory_amount()
+{
+	return _IC - IC_DEFAULT_VALUE;
+}

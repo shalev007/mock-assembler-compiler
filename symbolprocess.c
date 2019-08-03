@@ -167,6 +167,7 @@ void handle_external_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = EXTERNAL_ADDRESS_VALUE;
+	symbol.size = 0;
 	symbol.isMacro = false;
 	symbol.isExternal = true;
 
@@ -197,6 +198,7 @@ void handle_macro_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = macroValue;
+	symbol.value = 0;
 	symbol.isMacro = true;
 	symbol.isExternal = false;
 
@@ -227,6 +229,7 @@ void handle_symbol_assign(char ** words)
 	symbol.name = symbolName;
 	symbol.type = symbolType;
 	symbol.value = value;
+	symbol.size = size;
 	symbol.isMacro = false;
 	symbol.isExternal = false;
 
@@ -242,4 +245,20 @@ void handle_command(char ** words)
 	int size = calculate_command_space(words);
 	/* only increment counter */
 	get_instructions_counter(size);
+}
+
+void update_data_symbols_addresses()
+{
+	int ic = get_instructions_counter(0);
+
+	symbolListPtr current = symbolListHead;
+	
+	while(current != NULL) {
+		/* only data symbols */
+		if (current->symbol.type == DATA) {
+			/* updates adres after end of ic*/
+			current->symbol.value += ic;
+		}
+		current = current->next;
+	}
 }
