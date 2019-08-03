@@ -147,6 +147,8 @@ int calculate_space_by_addressing_modes(AddressingMode dest, AddressingMode src)
 
 int calculate_space_by_addressing_mode(AddressingMode);
 
+int calculate_number_of_operands(char ** commandline, char * commandName);
+
 signed int get_command_id(char * command)
 {
 	int count = 16;
@@ -176,7 +178,6 @@ bool is_command(char * command)
 
 int calculate_command_space(char ** commandline)
 {
-	int i = 0;
 	int numOfOperands = 0;
 	int space = 0;
 
@@ -195,12 +196,7 @@ int calculate_command_space(char ** commandline)
 	commandName = commandline[0];
 
 	/* calculate number of operands */
-	while(commandline[i]) {
-		if(strcmp(commandline[i], commandName) != 0) {
-			numOfOperands++;
-		}
-		i++;
-	}
+	numOfOperands = calculate_number_of_operands(commandline, commandName);
 
 	/* assign destination and source operands */
 	if(numOfOperands == 1) {
@@ -433,10 +429,25 @@ void reset_instructions_counter()
 	_IC = IC_DEFAULT_VALUE;
 }
 
-void instruction_to_bits(char ** commandline)
+int calculate_number_of_operands(char ** commandline, char * commandName)
 {
 	int i = 0;
 	int numOfOperands = 0;
+
+	while(commandline[i]) {
+		if(strcmp(commandline[i], commandName) != 0) {
+			numOfOperands++;
+		}
+		i++;
+	}
+
+	return numOfOperands;
+}
+
+void instruction_to_bits(char ** commandline)
+{
+	int numOfOperands = 0;
+	int commandCode = -1;
 	char * dest = NULL;
 	char * src = NULL;
 	char * commandName;
@@ -446,12 +457,7 @@ void instruction_to_bits(char ** commandline)
 
 	commandName = commandline[0];
 	/* calculate number of operands */
-	while(commandline[i]) {
-		if(strcmp(commandline[i], commandName) != 0) {
-			numOfOperands++;
-		}
-		i++;
-	}
+	numOfOperands = calculate_number_of_operands(commandline, commandName);
 
 	/* assign destination and source operands */
 	if(numOfOperands == 1) {
@@ -464,7 +470,9 @@ void instruction_to_bits(char ** commandline)
 
 	destAddressMode = addressing_mode_type(dest);
 	srcAddressMode = addressing_mode_type(src);
-
-	printf("%d ", srcAddressMode);
-	printf("%d\n", destAddressMode);
+	commandCode = get_command_id(commandName);
+	
+	printf("src: %d, ", srcAddressMode);
+	printf("dest: %d, ", destAddressMode);
+	printf("commandCode: %d\n", commandCode);
 }
