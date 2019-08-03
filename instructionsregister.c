@@ -207,9 +207,7 @@ int calculate_command_space(char ** commandline)
 
 	} else if(numOfOperands == 2) {
 		dest = commandline[2];
-		/* create the src without the ',' sign*/
-		src = (char *) malloc(sizeof(commandline[1]) * sizeof(char));
-        strncat(src, commandline[1], sizeof(commandline[1])-1);
+		src = commandline[1];
 	}
 
 	destAddressMode = addressing_mode_type(dest);

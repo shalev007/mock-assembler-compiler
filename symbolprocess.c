@@ -18,9 +18,12 @@ void handle_macro_symbol(char ** words);
 
 void handle_symbol_assign(char ** words);
 
+void remove_whitespaces(char * str);
+
 void process_symbol(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
+	
 	if(is_entry(words[0])) {/* ignore entry type symbols */
 		return;
 
@@ -76,6 +79,8 @@ char ** convert_line_to_words_array(char *line)
 	wordArray[i] = NULL;
 
 	/* free alloctated spaces */
+	lineClone = NULL;
+	free(lineClone);
 	free(nextWord);
 
 	return wordArray;
