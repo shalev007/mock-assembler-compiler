@@ -8,6 +8,6 @@
 #define EXTERNAL_ADDRESS_VALUE 0
 
 
-void process_symbol(char *line);
+void first_loop_process(char *line);
 
 void update_data_symbols_addresses();

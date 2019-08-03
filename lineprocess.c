@@ -1,4 +1,4 @@
-#include "symbolprocess.h"
+#include "lineprocess.h"
 #include "symbollist.h"
 #include "symbol.h"
 
@@ -28,7 +28,7 @@ void handle_symbol_assign(char ** words);
 
 void handle_command(char ** words);
 
-void process_symbol(char *line)
+void first_loop_process(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
 

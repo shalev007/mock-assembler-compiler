@@ -1,5 +1,5 @@
 #include "fileprocess.h"
-#include "symbolprocess.h"
+#include "lineprocess.h"
 
 int _courrent_line_number = 0;
 
@@ -26,7 +26,7 @@ void process_file(char *filename)
 			_courrent_line_number++;
 			/* skips comment and empty lines */
 			if(!is_empty(line)) {
-				process_symbol(line);
+				first_loop_process(line);
 			}
 		}
 		/* save memory cells */
