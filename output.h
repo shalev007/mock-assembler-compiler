@@ -11,7 +11,7 @@ typedef enum machineCode {
 
 typedef struct outputLine {
 	int lineNumber;
-	int *bits;
+	char *bits;
 } OutputLine;
 
 
@@ -25,3 +25,5 @@ typedef struct outputLineItem {
 void push_line_to_list(OutputLine line);
 
 void print_outputline_list();
+
+char * decimal_to_bin(int n,int s);

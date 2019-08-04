@@ -157,7 +157,7 @@ char * get_array_name(char * name);
 
 MachineCode get_operand_mchine_code(char * op);
 
-int * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode);
+char * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode);
 
 signed int get_command_id(char * command)
 {
@@ -504,6 +504,7 @@ void instruction_to_bits(char ** commandline)
 	char * dest = NULL;
 	char * src = NULL;
 	char * commandName;
+	OutputLine line;
 
 	AddressingMode destAddressMode;
 	AddressingMode srcAddressMode;
@@ -521,33 +522,47 @@ void instruction_to_bits(char ** commandline)
 		src = commandline[1];
 	}
 
-	destAddressMode = addressing_mode_type(dest) == NAM ? IMMEDIATE : addressing_mode_type(dest);
-	srcAddressMode = addressing_mode_type(src) == NAM ? IMMEDIATE : addressing_mode_type(src);
+	destAddressMode = addressing_mode_type(dest);
+	srcAddressMode = addressing_mode_type(src);
+
+	destAddressMode = destAddressMode == NAM ? IMMEDIATE : destAddressMode;
+	srcAddressMode = srcAddressMode == NAM ? IMMEDIATE : srcAddressMode;
 	commandCode = get_command_id(commandName);
 
-	build_command_bits(commandCode, srcAddressMode, destAddressMode);
+	line.bits = build_command_bits(commandCode, srcAddressMode, destAddressMode);
+	line.lineNumber = get_instructions_counter(1);
+	push_line_to_list(line);
+	/* add operands lines */
 }
 
 
 
-int * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode)
+char * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode)
 {
-	int i = 0;
-	int * bits = malloc(CELL_BIT_SIZE * sizeof(int));
-	/*
-	int * commandCodeBits = number_to_bit(commandCode, 4);
-	int * srcAddressModeBits = number_to_bit(srcAddressMode, 2);
-	int * destAddressModeBits = number_to_bit(destAddressMode, 2);
-	/* not in use */
-	bits[0] = 0;
-	bits[1] = 0;
-	bits[2] = 0;
-	bits[3] = 0;
+	char * bits = malloc(CELL_BIT_SIZE * sizeof(char));
 
-	while(i < CELL_BIT_SIZE) {
-		printf("%d", bits[i]);
-		i++;
-	}
-	printf("\n");
+	char * commandCodeBits = decimal_to_bin(commandCode, 4);
+	char * srcAddressModeBits = decimal_to_bin(srcAddressMode, 2);
+	char * destAddressModeBits = decimal_to_bin(destAddressMode, 2);
+	/* not in use */
+	bits[0] = '0';
+	bits[1] = '0';
+	bits[2] = '0';
+	bits[3] = '0';
+	/* command */
+	bits[4] = commandCodeBits[0];
+	bits[5] = commandCodeBits[1];
+	bits[6] = commandCodeBits[2];
+	bits[7] = commandCodeBits[3];
+	/* src operand */
+	bits[8] = srcAddressModeBits[0];
+	bits[9] = srcAddressModeBits[1];
+	/* dest operand */
+	bits[10] = destAddressModeBits[0];
+	bits[11] = destAddressModeBits[1];
+	/* machine code */
+	bits[12] = '0';
+	bits[13] = '0';
+
 	return bits;
 }

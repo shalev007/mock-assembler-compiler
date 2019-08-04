@@ -25,7 +25,6 @@ void push_line_to_list(OutputLine line)
 
 void print_outputline_list()
 {
-	int i;
 	OutputLinePtr current = outputLineHead;
 
 	if(outputLineHead == NULL) {
@@ -34,33 +33,32 @@ void print_outputline_list()
 	}
 	printf("--------Outputline List-------\n");
 	while(current != NULL) {
-		i = 0;
 		printf("--------------------------\n");
 		printf("line number: %d\n",current->line.lineNumber);
-		printf("data: ");
-		while(i < 14) {
-			printf("%d",current->line.bits[i]);
-			i++;
-		}
-		printf("\n");
+		printf("data: %s\n", current->line.bits);
 		printf("--------------------------\n");
 		current = current->next;
 	}
 }
 
  /*function that take a nuber and make it a bit with the given size */
-int * number_to_bit(int numberToBit,int size)
+char * decimal_to_bin(int n,int s)
 {
-	int  counter = 12;
-	int mask;
-	int* bitNum = malloc(sizeof(int)*11);
-	/*the loop run with mask and print into an array the given number as bits */
-	for (; counter >= 0; counter--) {
-		mask = numberToBit >> counter;
-		bitNum[counter] = mask & 1 ? 1 : 0;
-	}
-	/*pointer that give a validation option of -1 at the wanted place */
-	bitNum[size] = -1;
+	int c, d, count;
+	char *pointer;
 
-	return bitNum;
+	count = 0;
+	pointer = (char*)malloc(s+1);
+
+	for (c = s-1; c >= 0; c--) {
+		d = n >> c;
+		if (d & 1) {
+			*(pointer+count) = 1 + '0';
+		} else {
+			*(pointer+count) = 0 + '0';
+		}
+		count++;
+	}
+	*(pointer+count) = '\0';
+	return pointer;
 }
