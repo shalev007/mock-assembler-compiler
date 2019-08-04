@@ -155,9 +155,19 @@ int calculate_number_of_operands(char ** commandline, char * commandName);
 
 char * get_array_name(char * name);
 
+char * get_array_i_value(char * array);
+
 MachineCode get_operand_mchine_code(char * op);
 
-char * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode);
+void create_lines(int commandCode, int srcAddressMode, int destAddressMode);
+
+void create_operand_lines(char * src, char * dest);
+
+void create_single_line_for_registers(char * src, char * dest);
+
+void create_operand_line(char * op, AddressingMode am);
+
+void create_array_lines(char * op);
 
 signed int get_command_id(char * command)
 {
@@ -472,6 +482,30 @@ char * get_array_name(char * name)
 	return newName;
 }
 
+char * get_array_i_value(char * name)
+{
+	int i = 0;
+	int counter = 0;
+	bool flag = false;
+	char * newName = (char *) malloc(sizeof(char));
+	while(name[i]) {
+		if (name[i] == '[' || flag) {
+			if (name[i] == ']') {
+				break;
+			}
+			if (name[i] != '[') {
+				newName = (char *) realloc(newName, (counter + 1) * sizeof(char));
+				newName[counter] = name[i];
+				counter++;
+			}
+			flag = true;
+		}
+		i++;
+	}
+	newName[counter+1] = '\0';
+	return newName;
+}
+
 MachineCode get_operand_mchine_code(char * op)
 {
 
@@ -504,7 +538,6 @@ void instruction_to_bits(char ** commandline)
 	char * dest = NULL;
 	char * src = NULL;
 	char * commandName;
-	OutputLine line;
 
 	AddressingMode destAddressMode;
 	AddressingMode srcAddressMode;
@@ -529,16 +562,15 @@ void instruction_to_bits(char ** commandline)
 	srcAddressMode = srcAddressMode == NAM ? IMMEDIATE : srcAddressMode;
 	commandCode = get_command_id(commandName);
 
-	line.bits = build_command_bits(commandCode, srcAddressMode, destAddressMode);
-	line.lineNumber = get_instructions_counter(1);
-	push_line_to_list(line);
-	/* add operands lines */
+	create_lines(commandCode, srcAddressMode, destAddressMode);
+	create_operand_lines(src, dest);
 }
 
 
 
-char * build_command_bits(int commandCode, int srcAddressMode, int destAddressMode)
+void create_lines(int commandCode, int srcAddressMode, int destAddressMode)
 {
+	OutputLine line;
 	char * bits = malloc(CELL_BIT_SIZE * sizeof(char));
 
 	char * commandCodeBits = decimal_to_bin(commandCode, 4);
@@ -564,5 +596,50 @@ char * build_command_bits(int commandCode, int srcAddressMode, int destAddressMo
 	bits[12] = '0';
 	bits[13] = '0';
 
-	return bits;
+	line.bits = bits;
+	line.lineNumber = get_instructions_counter(1);
+	push_line_to_list(line);
+}
+
+void create_operand_lines(char * src, char * dest)
+{
+	AddressingMode srcAddressMode = addressing_mode_type(src);
+	AddressingMode destAddressMode = addressing_mode_type(dest);
+
+	if (srcAddressMode == REGISTER && destAddressMode == REGISTER) {
+		create_single_line_for_registers(src, dest);
+		return;
+	}
+
+	create_operand_line(src, srcAddressMode);
+	create_operand_line(dest, destAddressMode);
+	return;
+}
+
+void create_single_line_for_registers(char * src, char * dest)
+{
+
+}
+
+void create_operand_line(char * op, AddressingMode am)
+{
+	int value = 0;
+	MachineCode mc;
+
+	if (op == NULL) {
+		return;
+	}else if (am == INDEXED) {/* handle array type */
+		create_array_lines(op);
+		return;
+	}
+
+	mc = get_operand_mchine_code(op);
+}
+
+void create_array_lines(char * op)
+{
+	char * arrayLabel = get_array_name(op);
+	char * arrayIndex = get_array_i_value(op);
+	
+	printf("%s : %s\n", arrayLabel, arrayIndex);
 }

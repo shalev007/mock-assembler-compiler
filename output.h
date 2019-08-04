@@ -5,8 +5,8 @@
 
 typedef enum machineCode {
 	A,
-	R,
-	E
+	E,
+	R
 } MachineCode;
 
 typedef struct outputLine {

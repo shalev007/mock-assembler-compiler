@@ -11,6 +11,8 @@ extern int get_instructions_memory_amount();
 
 extern int get_data_memory_amount();
 
+extern void print_outputline_list();/* TODO delete when done developing */
+
 bool is_empty(char line[]);
 
 void process_file(char *filename)
@@ -54,7 +56,7 @@ void process_file(char *filename)
 				second_loop_process(line);
 			}
 		}
-
+		print_outputline_list();
 		printf("\n error mode: %d\n", _error_flag);
 	} else {
 		printf("%s does not exist...\n", filename);
