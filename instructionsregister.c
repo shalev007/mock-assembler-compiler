@@ -163,6 +163,10 @@ char * get_array_i_value(char * array);
 
 MachineCode get_operand_mchine_code(char * op);
 
+int get_absolute_value(char * str);
+
+void add_to_external_list(char * name, int line);
+
 void create_lines(int commandCode, int srcAddressMode, int destAddressMode);
 
 void create_operand_lines(char * src, char * dest);
@@ -413,7 +417,7 @@ bool is_addressing_mode_allowed_by_command(AddressingMode addressing_mode, Addre
 int calculate_space_by_addressing_modes(AddressingMode dest, AddressingMode src)
 {
 	int space = 1;
-	
+
 	if (is_empty_addressing_mode(dest)) { /* only command */
 		return space;
 	} else if (dest == REGISTER && src == REGISTER) { /* register type operands share the same memory cell */
@@ -537,6 +541,42 @@ MachineCode get_operand_mchine_code(char * op)
 	return A;
 }
 
+int get_absolute_value(char * str)
+{
+	int value = 0;
+	int i = 1;
+	char * noHashtagStr = (char *) malloc(strlen(str) * sizeof(char));
+
+	/* remove '#' */
+	while(str[i]) {
+		noHashtagStr[i-1] = str[i];
+		i++;
+	}
+
+	/* get int value */
+	if (is_symbol_in_list(noHashtagStr)) {
+		value = get_symbol_value_by_name(noHashtagStr);
+	} else {
+		value = atoi(noHashtagStr);
+	}
+
+	/* free allocated space */
+	noHashtagStr = NULL;
+	free(noHashtagStr);
+	return value;
+}
+
+int get_register_value(char * reg)
+{
+	int value = 0;
+	value = reg[1] - '0';
+	return value;
+}
+
+void add_to_external_list(char * name, int line)
+{
+	/* TODO create external list */
+}
 void instruction_to_bits(char ** commandline)
 {
 	int numOfOperands = 0;
@@ -624,7 +664,48 @@ void create_operand_lines(char * src, char * dest)
 
 void create_single_line_for_registers(char * src, char * dest)
 {
-	/* TODO add register line */
+	OutputLine line;
+	int srcVal, destVal;
+	char * srcBits;
+	char * destBits;
+	char * bits = (char *) malloc(14*sizeof(char));
+
+	srcVal = get_register_value(src);
+	destVal = get_register_value(dest);
+
+	srcBits = decimal_to_bin(srcVal, 3);
+	destBits = decimal_to_bin(destVal, 3);
+
+	bits[0] = '0';
+	bits[1] = '0';
+	bits[2] = '0';
+	bits[3] = '0';
+	bits[4] = '0';
+	bits[5] = '0';
+	/* src bits */
+	bits[6] = srcBits[0];
+	bits[7] = srcBits[1];
+	bits[8] = srcBits[2];
+	/* dest bits */
+	bits[9] = destBits[0];
+	bits[10] = destBits[1];
+	bits[11] = destBits[2];
+
+	/* machine code */
+	bits[12] = '0';
+	bits[13] = '0';
+
+	line.bits = bits;
+	line.lineNumber = get_instructions_counter(1);
+	push_line_to_list(line);
+
+	/* free allocated space */
+	srcBits = NULL;
+	destBits = NULL;
+	bits = NULL;
+	free(srcBits);
+	free(destBits);
+	free(bits);
 }
 
 void create_operand_line(char * op, AddressingMode am)
@@ -637,6 +718,18 @@ void create_operand_line(char * op, AddressingMode am)
 	}else if (am == INDEXED) {/* handle array type */
 		create_array_lines(op);
 		return;
+	}
+
+	if (op[0] == '#') { /* handle absolute operand value */
+		opValue = get_absolute_value(op);
+	} else if (am == REGISTER) { /* handle register operand */
+		opValue = get_register_value(op);
+	} else if (is_symbol_in_list(op)) {
+		if (is_symbol_external(op)) { /* handle symbols*/
+			add_to_external_list(op, get_instructions_counter(1)); /* add external to list */
+			get_instructions_counter(-1);
+		}
+		opValue = get_symbol_value_by_name(op);
 	}
 
 	mc = get_operand_mchine_code(op);
