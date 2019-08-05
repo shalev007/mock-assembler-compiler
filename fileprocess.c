@@ -56,7 +56,6 @@ void process_file(char *filename)
 				second_loop_process(line);
 			}
 		}
-		print_outputline_list();
 		printf("\n error mode: %d\n", _error_flag);
 	} else {
 		printf("%s does not exist...\n", filename);

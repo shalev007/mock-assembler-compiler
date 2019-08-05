@@ -786,7 +786,4 @@ void build_op_line(int value, MachineCode mc)
 	line.bits = bits;
 	line.lineNumber = get_instructions_counter(1);
 	push_line_to_list(line);
-
-	printf("value: %d, mc: %d\n", value, mc);
-	printf("all: %s\n", bits);
 }

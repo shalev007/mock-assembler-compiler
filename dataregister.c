@@ -7,6 +7,8 @@ extern int get_file_line();
 
 extern void set_error_mode();
 
+extern int get_instructions_counter(int size);
+
 DataType get_data_type(char ** data);
 
 bool validate_data(char ** data, DataType type);
@@ -20,6 +22,10 @@ int calculate_data_type(char ** data);
 int calculate_string_type(char ** data);
 
 void reset_data_counter();
+
+void string_to_bin(char ** words);
+
+void char_to_bin(char c);
 
 int calculate_data_space(char ** data)
 {
@@ -124,5 +130,41 @@ void reset_data_counter()
 
 void data_to_bits(char ** words)
 {
-	
+	if (strcmp(words[0], STRING_TYPE_SYMBOL) == 0) {
+		string_to_bin(words);
+	} else if (strcmp(words[0], DATA_TYPE_SYMBOL) == 0) {
+		/* code */
+	}
+}
+
+void string_to_bin(char ** words)
+{
+	OutputLine line;
+	int i = 0;
+	char * string = words[1];
+
+	while(string[i]) {
+		if (isalpha(string[i])) {
+			char_to_bin(string[i]);
+		}
+		i++;
+	}
+	/* add end of string */
+	line.lineNumber = get_instructions_counter(1);
+	line.bits = decimal_to_bin(0, 14);
+	push_line_to_list(line);
+
+	/* free allocated space */
+	string = NULL;
+	free(string);
+}
+
+void char_to_bin(char c)
+{
+	OutputLine line;
+	int value = c - '0';
+
+	line.lineNumber = get_instructions_counter(1);
+	line.bits = decimal_to_bin(value, 14);
+	push_line_to_list(line);
 }
