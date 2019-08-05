@@ -70,7 +70,7 @@ void process_file(char *filename)
 			return;
 		}
 		print_outputline_list();
-
+		print_symbol_list();
 		reset_all();
 	} else {
 		printf("%s does not exist...\n", filename);

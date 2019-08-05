@@ -324,7 +324,16 @@ void set_saved_memory_cells(int instructions, int data)
 
 void add_to_entry_list(char * entry)
 {
-	/* TODO add entry to list */
+	int i = 0;
+	if (entry_list != NULL) {
+		while(entry_list[i]) {
+			i++;
+		}
+	}
+	entry_list = (char **) realloc(entry_list, (i + 1) * sizeof(char *));
+	entry_list[i] = (char *) malloc(sizeof(entry));
+	entry_list[i] = entry;
+
 	return;
 }
 
@@ -362,10 +371,9 @@ void reset_memory_counters()
 void reset_entry_list()
 {
 	int i = 0;
-	char ** current = entry_list;
-	while(current[i]) {
-		current = NULL;
-		free(current);
+	while(entry_list[i]) {
+		entry_list[i] = NULL;
+		free(entry_list[i]);
 		i++;
 	}
 }
