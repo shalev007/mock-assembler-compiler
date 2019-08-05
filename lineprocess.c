@@ -6,7 +6,7 @@ int instructions_memory = 0;
 
 int data_memory = 0;
 
-char * entry_array = NULL;
+char ** entry_list = NULL;
 
 extern int get_instructions_counter(int size);
 
@@ -50,6 +50,10 @@ void convert_command_to_output_item(char ** words);
 
 void convert_data_to_output_item(char ** words);
 
+void reset_memory_counters();
+
+void reset_entry_list();
+
 void first_loop_process(char *line)
 {
 	char ** words = convert_line_to_words_array(line);
@@ -89,11 +93,11 @@ void second_loop_process(char *line)
 		add_to_entry_list(words[1]);
 		return;
 
-	} else if (is_symbol_assign(words)) {
+	} else if (is_symbol_assign(words)) {/* handle symbols */
 		convert_symbol_assign_to_ouput_item(words);
 		return;
 
-	} else if (is_command(words[0])) {
+	} else if (is_command(words[0])) {/* handle commands */
 		convert_command_to_output_item(words);
 		return;
 	}
@@ -346,4 +350,22 @@ void convert_command_to_output_item(char ** words)
 void convert_data_to_output_item(char ** words)
 {
 	data_to_bits(words);
+}
+
+void reset_memory_counters()
+{
+	instructions_memory = 0;
+	data_memory = 0;
+	reset_entry_list();
+}
+
+void reset_entry_list()
+{
+	int i = 0;
+	char ** current = entry_list;
+	while(current[i]) {
+		current = NULL;
+		free(current);
+		i++;
+	}
 }

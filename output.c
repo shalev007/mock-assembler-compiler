@@ -62,3 +62,9 @@ char * decimal_to_bin(int n,int s)
 	*(pointer+count) = '\0';
 	return pointer;
 }
+
+void reset_output_list()
+{
+	/* TODO: clean output list */
+	outputLineHead = NULL;
+}

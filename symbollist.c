@@ -154,3 +154,9 @@ bool is_symbol_in_list(char * name)
 
 	return false;
 }
+
+void reset_symbol_list()
+{
+	/* TODO: clean symbol list */
+	symbolListHead = NULL;
+}

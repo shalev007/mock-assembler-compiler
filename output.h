@@ -27,3 +27,5 @@ void push_line_to_list(OutputLine line);
 void print_outputline_list();
 
 char * decimal_to_bin(int n,int s);
+
+void reset_output_list();

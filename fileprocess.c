@@ -7,13 +7,21 @@ bool _error_flag = false;
 
 extern void print_symbol_list(); /* TODO delete when done developing */
 
+extern void print_outputline_list();/* TODO delete when done developing */
+
 extern int get_instructions_memory_amount();
 
 extern int get_data_memory_amount();
 
-extern void print_outputline_list();/* TODO delete when done developing */
+extern void reset_memory_counters();
+
+extern void reset_symbol_list();
+
+extern void reset_output_list();
 
 bool is_empty(char line[]);
+
+void reset_all();
 
 void process_file(char *filename)
 {
@@ -56,8 +64,14 @@ void process_file(char *filename)
 				second_loop_process(line);
 			}
 		}
+		/* stops action on error */
+		if (_error_flag) {
+			printf("found some erros, cannot create files, please fix and run agian. \n");
+			return;
+		}
 		print_outputline_list();
-		printf("\n error mode: %d\n", _error_flag);
+
+		reset_all();
 	} else {
 		printf("%s does not exist...\n", filename);
 	}
@@ -91,4 +105,15 @@ int get_file_line()
 void set_error_mode()
 {
 	_error_flag = true;
+}
+
+void reset_all()
+{
+	_courrent_line_number = 0;
+	_error_flag = false;
+	reset_counters();
+	reset_memory_counters();
+	reset_symbol_list();
+	reset_output_list();
+	/* TODO reset all global variables */
 }
