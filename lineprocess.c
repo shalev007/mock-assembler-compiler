@@ -241,7 +241,7 @@ void handle_macro_symbol(char ** words)
 	symbol.name = words[1];
 	symbol.type = EMPTY;
 	symbol.value = macroValue;
-	symbol.value = 0;
+	symbol.size = 1;
 	symbol.isMacro = true;
 	symbol.isExternal = false;
 

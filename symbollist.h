@@ -53,4 +53,6 @@ int get_symbol_value_by_name(char * name);
 
 bool is_symbol_external(char * name);
 
+bool is_symbol_macro(char * name);
+
 bool is_symbol_in_list(char * name);

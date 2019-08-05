@@ -125,6 +125,10 @@ extern bool is_symbol_external(char * name);
 
 extern bool is_symbol_in_list(char * name);
 
+extern bool is_symbol_macro(char * name);
+
+extern int get_symbol_value_by_name(char * name);
+
 bool validate_command(char ** commandline);
 
 bool validate_command_addressing_mode(char * name, AddressingMode dest, AddressingMode src);
@@ -168,6 +172,8 @@ void create_single_line_for_registers(char * src, char * dest);
 void create_operand_line(char * op, AddressingMode am);
 
 void create_array_lines(char * op);
+
+void build_op_line(int value, MachineCode mc);
 
 signed int get_command_id(char * command)
 {
@@ -618,12 +624,12 @@ void create_operand_lines(char * src, char * dest)
 
 void create_single_line_for_registers(char * src, char * dest)
 {
-
+	/* TODO add register line */
 }
 
 void create_operand_line(char * op, AddressingMode am)
 {
-	int value = 0;
+	int opValue = 0;
 	MachineCode mc;
 
 	if (op == NULL) {
@@ -634,12 +640,60 @@ void create_operand_line(char * op, AddressingMode am)
 	}
 
 	mc = get_operand_mchine_code(op);
+	build_op_line(opValue, mc);
 }
 
 void create_array_lines(char * op)
 {
 	char * arrayLabel = get_array_name(op);
-	char * arrayIndex = get_array_i_value(op);
-	
-	printf("%s : %s\n", arrayLabel, arrayIndex);
+	char * indexName = get_array_i_value(op);
+	int labelValue = 0;
+	int indexValue = 0;
+	MachineCode labelMc;
+	MachineCode indexlMc = A;
+
+	if (isdigit(indexName[0]) > 0) { /* is numeric value */
+		indexValue = atoi(indexName);
+
+	} else if (is_symbol_in_list(indexName)) {/* is valid symbol */
+		if (!is_symbol_macro(indexName)) {/* not macro */
+			printf("array index is not numeric or macro on line %d\n", get_file_line());
+			set_error_mode();
+		} else { /* is macro */
+			indexValue = get_symbol_value_by_name(indexName);
+		}
+	} else {
+		printf("undefined array index %s on line %d\n", indexName, get_file_line());
+		set_error_mode();
+	}
+
+	labelValue = get_symbol_value_by_name(arrayLabel);
+	labelMc = get_operand_mchine_code(arrayLabel);
+
+	build_op_line(labelValue, labelMc);
+	build_op_line(indexValue, indexlMc);
+}
+
+void build_op_line(int value, MachineCode mc)
+{
+	OutputLine line;
+	int i = 0;
+	char * bits = malloc(CELL_BIT_SIZE * sizeof(char));
+	char * valueBits = decimal_to_bin(value, 12);
+	char * mcBits = decimal_to_bin(mc, 2);
+
+	while(i<12) {
+		bits[i] = valueBits[i];
+		i++;
+	}
+	/* machine code */
+	bits[12] = mcBits[0];
+	bits[13] = mcBits[1];
+
+	line.bits = bits;
+	line.lineNumber = get_instructions_counter(1);
+	push_line_to_list(line);
+
+	printf("value: %d, mc: %d\n", value, mc);
+	printf("all: %s\n", bits);
 }

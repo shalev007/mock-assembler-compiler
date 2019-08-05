@@ -129,6 +129,19 @@ bool is_symbol_external(char * name)
 	return false;
 }
 
+bool is_symbol_macro(char * name)
+{
+	symbolListPtr current = symbolListHead;
+	while(current != NULL) {
+		if (strcmp(current->symbol.name, name) == 0) {
+			return current->symbol.isMacro;
+		}
+		current = current->next;
+	}
+
+	return false;
+}
+
 bool is_symbol_in_list(char * name)
 {
 	symbolListPtr current = symbolListHead;
