@@ -4,9 +4,13 @@ extern int instructions_memory;
 
 extern int data_memory;
 
+extern char ** entry_list;
+
 OutputLinePtr outputLineHead = NULL;
 
 ExternalItemList * external_list = NULL;
+
+extern int get_symbol_value_by_name(char * name);
 
 void push_line_to_list(OutputLine line)
 {
@@ -170,5 +174,12 @@ void create_ext_file(char * filename)
 
 void create_ent_file(char * filename)
 {
-
+	FILE *file;
+	int i = 0;
+	file = fopen(filename, "w");
+	while(entry_list[i]) {
+		fprintf(file, "%s %d\n", entry_list[i], get_symbol_value_by_name(entry_list[i]));
+		i++;
+	}
+	fclose(file);
 }
