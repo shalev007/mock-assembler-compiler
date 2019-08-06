@@ -67,7 +67,13 @@ char * decimal_to_bin(int n,int s)
 
 void reset_output_list()
 {
-	/* TODO: clean output list */
+	OutputLinePtr current = outputLineHead;
+	while(current) {
+		current->line.bits = NULL;
+		free(current->line.bits);
+		free(current);
+		current = current->next;
+	}
 	outputLineHead = NULL;
 }
 

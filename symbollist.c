@@ -157,6 +157,12 @@ bool is_symbol_in_list(char * name)
 
 void reset_symbol_list()
 {
-	/* TODO: clean symbol list */
+	symbolListPtr current = symbolListHead;
+	while(current) {
+		current->symbol.name = NULL;
+		free(current->symbol.name);
+		free(current);
+		current = current->next;
+	}
 	symbolListHead = NULL;
 }
