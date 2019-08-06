@@ -573,10 +573,6 @@ int get_register_value(char * reg)
 	return value;
 }
 
-void add_to_external_list(char * name, int line)
-{
-	/* TODO create external list */
-}
 void instruction_to_bits(char ** commandline)
 {
 	int numOfOperands = 0;

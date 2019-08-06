@@ -299,7 +299,7 @@ void update_data_symbols_addresses()
 	int ic = get_instructions_counter(0);
 
 	symbolListPtr current = symbolListHead;
-	
+
 	while(current != NULL) {
 		/* only data symbols */
 		if (current->symbol.type == DATA) {

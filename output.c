@@ -2,6 +2,8 @@
 
 OutputLinePtr outputLineHead = NULL;
 
+ExternalItemList * external_list = NULL;
+
 void push_line_to_list(OutputLine line)
 {
 	OutputLinePtr current = outputLineHead;
@@ -67,4 +69,39 @@ void reset_output_list()
 {
 	/* TODO: clean output list */
 	outputLineHead = NULL;
+}
+
+void add_to_external_list(char * name, int line)
+{
+	ExternalItem external_item;
+	ExternalItemList * current = external_list;
+	external_item.line = line;
+	external_item.symbol = name;
+
+	if(external_list == NULL) {
+		external_list = (ExternalItemList *) malloc(sizeof(ExternalItemList));
+		external_list->external = external_item;
+		external_list->next = NULL;
+	} else {
+		while(current->next) {
+			current = current->next;
+		}
+		current->next = (ExternalItemList *) malloc(sizeof(ExternalItemList));
+		current->next->external = external_item;
+		current->next->next = NULL;
+	}
+
+	return;
+}
+
+void reset_external_list()
+{
+	ExternalItemList * current = external_list;
+	while(current) {
+		current->external.symbol = NULL;
+		free(current->external.symbol);
+		free(current);
+		current = current->next;
+	}
+	external_list = NULL;
 }

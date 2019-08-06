@@ -19,6 +19,8 @@ extern void reset_symbol_list();
 
 extern void reset_output_list();
 
+extern void reset_external_list();
+
 bool is_empty(char line[]);
 
 void reset_all();
@@ -69,8 +71,10 @@ void process_file(char *filename)
 			printf("found some erros, cannot create files, please fix and run agian. \n");
 			return;
 		}
+		/*
 		print_outputline_list();
 		print_symbol_list();
+		*/
 		reset_all();
 	} else {
 		printf("%s does not exist...\n", filename);
@@ -115,5 +119,5 @@ void reset_all()
 	reset_memory_counters();
 	reset_symbol_list();
 	reset_output_list();
-	/* TODO reset all global variables */
+	reset_external_list();
 }
