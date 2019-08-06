@@ -1,3 +1,5 @@
 *.o
 *.as
+*.ext
+*.ent
 main

@@ -56,3 +56,5 @@ void create_o_file(char * filename);
 void create_ext_file(char * filename);
 
 void create_ent_file(char * filename);
+
+char * bits_to_special_base4(char * bits);

@@ -139,16 +139,33 @@ void create_output_files(char * filename)
 void create_o_file(char * filename)
 {
 	FILE *file;
+	OutputLinePtr current = outputLineHead;
 	file = fopen(filename, "w");
 
-	fprintf(file, "\t %d \t %d \t", instructions_memory, data_memory);
-
+	fprintf(file, "\t %d \t %d\n", instructions_memory, data_memory);
+	while(current) {
+		fprintf(file, "%d %s\n", current->line.lineNumber, bits_to_special_base4(current->line.bits));
+		current = current->next;
+	}
 	fclose(file);
+}
+
+char * bits_to_special_base4(char * bits)
+{
+	/* TODO add special 4 base logic */
+	return bits;
 }
 
 void create_ext_file(char * filename)
 {
-
+	FILE *file;
+	ExternalItemList * current = external_list;
+	file = fopen(filename, "w");
+	while(current) {
+		fprintf(file, "%s %d\n", current->external.symbol, current->external.line);
+		current = current->next;
+	}
+	fclose(file);
 }
 
 void create_ent_file(char * filename)
