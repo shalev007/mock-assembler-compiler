@@ -12,8 +12,6 @@ dataregister.o: dataregister.c output.h
 	gcc -c -ansi -pedantic -Wall dataregister.c -o dataregister.o
 symbol.o: symbol.c symbol.h symbollist.h instructionsregister.h dataregister.h
 	gcc -c -ansi -pedantic -Wall symbol.c -o symbol.o
-decimalToBin.o: decimalToBin.c decimalToBin.h
-	gcc -c -ansi -pedantic -Wall decimalToBin.c -o decimalToBin.o -lm
 output.o: output.c
 	gcc -c -ansi -pedantic -Wall output.c -o output.o
 main.o: main.c fileprocess.h
