@@ -21,15 +21,21 @@ extern void reset_output_list();
 
 extern void reset_external_list();
 
+extern void create_output_files(char * filename);
+
 bool is_empty(char line[]);
 
 void reset_all();
+
+char * get_filename_prefix(char *);
 
 void process_file(char *filename)
 {
 	FILE *file;
     char line[MAX_LINE_INPUT];
     int ic_mem_cells, dc_mem_cells;
+    char * filenameprefix;
+
     /* is valid file */
 	if((file = fopen(filename, "r"))) {
 		/* read each line */
@@ -75,7 +81,14 @@ void process_file(char *filename)
 		print_outputline_list();
 		print_symbol_list();
 		*/
+		filenameprefix = get_filename_prefix(filename);
+		create_output_files(filenameprefix);
 		reset_all();
+		/* free allocated space */
+		filenameprefix = NULL;
+		filename = NULL;
+		free(filenameprefix);
+		free(filename);
 	} else {
 		printf("%s does not exist...\n", filename);
 	}
@@ -120,4 +133,20 @@ void reset_all()
 	reset_symbol_list();
 	reset_output_list();
 	reset_external_list();
+}
+
+char * get_filename_prefix(char * filename)
+{
+	int i = 0;
+	char * newFileName;
+	while(filename[i] && filename[i] != '.') {
+		i++;
+	}
+	i = 0;
+	newFileName = (char *) malloc(i+1 * sizeof(char));
+	while(filename[i] && filename[i] != '.') {
+		newFileName[i] = filename[i];
+		i++;
+	}
+	return newFileName;
 }

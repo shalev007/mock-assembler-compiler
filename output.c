@@ -1,5 +1,9 @@
 #include "output.h"
 
+extern int instructions_memory;
+
+extern int data_memory;
+
 OutputLinePtr outputLineHead = NULL;
 
 ExternalItemList * external_list = NULL;
@@ -110,4 +114,44 @@ void reset_external_list()
 		current = current->next;
 	}
 	external_list = NULL;
+}
+
+char * concat(const char *s1, const char *s2)
+{
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
+}
+
+void create_output_files(char * filename)
+{
+	char * ofilename = concat(filename, ".o");
+	char * extfilename = concat(filename, ".ext");
+	char * entfilename = concat(filename, ".ent");
+
+	create_o_file(ofilename);
+	create_ext_file(extfilename);
+	create_ent_file(entfilename);
+}
+
+void create_o_file(char * filename)
+{
+	FILE *file;
+	file = fopen(filename, "w");
+
+	fprintf(file, "\t %d \t %d \t", instructions_memory, data_memory);
+
+	fclose(file);
+}
+
+void create_ext_file(char * filename)
+{
+
+}
+
+void create_ent_file(char * filename)
+{
+
 }

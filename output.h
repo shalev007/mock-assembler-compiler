@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define CELL_BIT_SIZE 14
 
@@ -45,3 +46,13 @@ void reset_output_list();
 void add_to_external_list(char * name, int line);
 
 void reset_external_list();
+
+void create_output_files(char * filename);
+
+char * concat(const char *s1, const char *s2);
+
+void create_o_file(char * filename);
+
+void create_ext_file(char * filename);
+
+void create_ent_file(char * filename);
