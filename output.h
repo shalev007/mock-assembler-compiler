@@ -41,6 +41,8 @@ void print_outputline_list();
 
 char * decimal_to_bin(int n,int s);
 
+int bin_to_decimal(char * bits);
+
 void reset_output_list();
 
 void add_to_external_list(char * name, int line);

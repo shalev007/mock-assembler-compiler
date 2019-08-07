@@ -10,6 +10,13 @@ OutputLinePtr outputLineHead = NULL;
 
 ExternalItemList * external_list = NULL;
 
+char outputLineSymbols [4] = {
+	'*',
+	'#',
+	'%',
+	'!'
+};
+
 extern int get_symbol_value_by_name(char * name);
 
 void push_line_to_list(OutputLine line)
@@ -73,6 +80,23 @@ char * decimal_to_bin(int n,int s)
 	return pointer;
 }
 
+
+int bin_to_decimal(char * bits)
+{
+	int i = 0;
+	int dec = 0;
+
+	while (bits[i]) {
+		if (bits[i] == '1'){
+			dec = dec * 2 + 1;
+		} else if (bits[i] == '0') {
+			dec *= 2;
+		}
+		i++;
+	}
+	return dec;
+}
+
 void reset_output_list()
 {
 	OutputLinePtr current = outputLineHead;
@@ -131,7 +155,7 @@ char * concat(const char *s1, const char *s2)
 
 void create_output_files(char * filename)
 {
-	char * ofilename = concat(filename, ".o");
+	char * ofilename = concat(filename, ".ob");
 	char * extfilename = concat(filename, ".ext");
 	char * entfilename = concat(filename, ".ent");
 
@@ -146,9 +170,9 @@ void create_o_file(char * filename)
 	OutputLinePtr current = outputLineHead;
 	file = fopen(filename, "w");
 
-	fprintf(file, "\t %d \t %d\n", instructions_memory, data_memory);
+	fprintf(file, "  %d %d\n", instructions_memory, data_memory);
 	while(current) {
-		fprintf(file, "%d %s\n", current->line.lineNumber, bits_to_special_base4(current->line.bits));
+		fprintf(file, "%d  %s\n", current->line.lineNumber, bits_to_special_base4(current->line.bits));
 		current = current->next;
 	}
 	fclose(file);
@@ -156,14 +180,32 @@ void create_o_file(char * filename)
 
 char * bits_to_special_base4(char * bits)
 {
+	int i = 0;
+	int index = 0;
+	char * currentBits = (char *) malloc(3 * sizeof(char));
+	char * symbolLine = (char *) malloc((strlen(bits)/2) * sizeof(char));
+
 	/* TODO add special 4 base logic */
-	return bits;
+	while(bits[i]) {
+		currentBits[0] = bits[i];
+		currentBits[1] = bits[i+1];
+		currentBits[2] = '\0';
+		index = bin_to_decimal(currentBits);
+		symbolLine[(i+1)/2] = outputLineSymbols[index];
+		i+=2;
+	}
+	return symbolLine;
 }
 
 void create_ext_file(char * filename)
 {
 	FILE *file;
 	ExternalItemList * current = external_list;
+
+	if (!current) { /* do not create unnecessery file */
+		return;
+	}
+
 	file = fopen(filename, "w");
 	while(current) {
 		fprintf(file, "%s %d\n", current->external.symbol, current->external.line);
@@ -176,6 +218,11 @@ void create_ent_file(char * filename)
 {
 	FILE *file;
 	int i = 0;
+
+	if (!entry_list[0]) { /* do not create unnecessery file */
+		return;
+	}
+
 	file = fopen(filename, "w");
 	while(entry_list[i]) {
 		fprintf(file, "%s %d\n", entry_list[i], get_symbol_value_by_name(entry_list[i]));
