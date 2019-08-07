@@ -371,9 +371,11 @@ void reset_memory_counters()
 void reset_entry_list()
 {
 	int i = 0;
-	while(entry_list[i]) {
-		entry_list[i] = NULL;
-		free(entry_list[i]);
-		i++;
+	if (entry_list) {
+		while(entry_list[i]) {
+			entry_list[i] = NULL;
+			free(entry_list[i]);
+			i++;
+		}
 	}
 }

@@ -219,7 +219,7 @@ void create_ent_file(char * filename)
 	FILE *file;
 	int i = 0;
 
-	if (!entry_list[0]) { /* do not create unnecessery file */
+	if (!entry_list) { /* do not create unnecessery file */
 		return;
 	}
 
