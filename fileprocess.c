@@ -5,10 +5,6 @@ int _courrent_line_number = 0;
 
 bool _error_flag = false;
 
-extern void print_symbol_list(); /* TODO delete when done developing */
-
-extern void print_outputline_list();/* TODO delete when done developing */
-
 extern int get_instructions_memory_amount();
 
 extern int get_data_memory_amount();
@@ -77,12 +73,10 @@ void process_file(char *filename)
 			printf("found some erros, cannot create files, please fix and run agian. \n");
 			return;
 		}
-		/*
-		print_outputline_list();
-		print_symbol_list();
-		*/
+
 		filenameprefix = get_filename_prefix(filename);
 		create_output_files(filenameprefix);
+		/* reset all global variables fro the next file */
 		reset_all();
 		/* free allocated space */
 		filenameprefix = NULL;

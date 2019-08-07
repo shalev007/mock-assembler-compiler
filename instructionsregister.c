@@ -647,14 +647,27 @@ void create_operand_lines(char * src, char * dest)
 {
 	AddressingMode srcAddressMode = addressing_mode_type(src);
 	AddressingMode destAddressMode = addressing_mode_type(dest);
+	bool srcCreated = false;
+	bool destCreated = false;
 
 	if (srcAddressMode == REGISTER && destAddressMode == REGISTER) {
 		create_single_line_for_registers(src, dest);
 		return;
+	} else if (srcAddressMode == REGISTER) { /* create register src line */
+		create_single_line_for_registers(src, "r0");
+		srcCreated = true;
+	} else if (destAddressMode == REGISTER) {/* create register dest line */
+		create_single_line_for_registers("r0", dest);
+		destCreated = true;
 	}
 
-	create_operand_line(src, srcAddressMode);
-	create_operand_line(dest, destAddressMode);
+	if (!srcCreated) {
+		create_operand_line(src, srcAddressMode);
+	}
+
+	if (!destCreated) {
+		create_operand_line(dest, destAddressMode);
+	}
 	return;
 }
 
